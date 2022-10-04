@@ -6,3 +6,4 @@ app/config.ini
 
 # images
 public/assets/images/*
+!assets/images
