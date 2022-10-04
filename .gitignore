@@ -5,4 +5,4 @@
 app/config.ini
 
 # images
-public/assets/images/*
+public/assets/images/**
