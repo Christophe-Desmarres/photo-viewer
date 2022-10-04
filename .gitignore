@@ -1,0 +1,8 @@
+# Composer
+/vendor
+
+# config
+app/config.ini
+
+# images
+public/assets/images
