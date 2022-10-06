@@ -1,12 +1,19 @@
 <?php
 
 $nom_dossier = "./assets/images/" . $folder;
-d($nom_dossier);
 // open the directory choose
 $dossierCourant = opendir($nom_dossier);
-d($dossierCourant);
 $chaine = [];
 $dossiers = [];
+
+
+/**
+ * 
+ * 
+ * test à faire avec scandir()
+ * source : https://www.w3schools.com/php/func_directory_scandir.asp
+ * 
+ */
 
 
 // boucle pour parcourir tous les éléments du dossier $nom_dossier 
@@ -23,24 +30,29 @@ closedir($dossierCourant);
 
 ?>
 
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
+
 
 <div class='container'>
 
     <h1 class="titre">Album <?= $folder ?></h1>
-    <div class="preview">
-        <ol class="image__list">
+    <form class="galerie__preview" action="/cart" method="post">
+
+        <button class="button__ordervalidate" type="submit" name="order">Valider mes choix pour impression</button>
+
+        <div class="image__orderlist">
             <?php
             foreach ($chaine as $image) : ?>
-                <li>
-                    <div class='card'>
-                        <img class="image__list-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $folder . "/" . $image ?>">
-                        <p class='image__list-name'><?= $image ?></p>
-                        <input type="checkbox" value="<?= $image ?>">
-                    </div>
-                </li>
+
+                <figure class="image__list">
+                    <img class="image__list-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $folder . "/" . $image ?>">
+                    <figcaption class='image__list-name'><?= $image ?></figcaption>
+                    <input class="img__inputselect" type="checkbox" value="<?= $image ?>" name="selected[]">
+                </figure>
+
             <?php endforeach; ?>
-        </ol>
-    </div>
+        </div>
+    </form>
 
 
 

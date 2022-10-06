@@ -68,6 +68,33 @@ $router->addRoutes([
         ],
         'main-cart' 
     ],
+    [
+        'POST',
+        '/cart',
+        [
+            'method' => 'order',
+            'controller' => '\App\Controllers\MainController'
+        ],
+        'main-order' 
+    ],
+    [
+        'GET',
+        '/administration',
+        [
+            'method' => 'admin',
+            'controller' => '\App\Controllers\MainController'
+        ],
+        'main-admin' 
+    ],
+    [
+        'POST',
+        '/upload',
+        [
+            'method' => 'upload',
+            'controller' => '\App\Controllers\MainController'
+        ],
+        'main-upload' 
+    ],
 ]);
 
 

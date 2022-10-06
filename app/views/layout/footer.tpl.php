@@ -1,17 +1,17 @@
 </main>
 
 <footer>
-    <ul class="footer--list">
-        <li class="footer--list__link"><a target="_blank" href="https://www.facebook.com/cdmarphoto/">Facebook</a></li>
-        <li class="footer--list__link"><a href="mailto: chrisdmar12@gmail.com">Nous contacter</a></li>
+    <ul class="footer__unorderlist">
+        <li class="footer__unorderlist--list"><a class="footer__unorderlist--link" target="_blank" href="https://www.facebook.com/cdmarphoto/">Facebook</a></li>
+        <li class="footer__unorderlist--list"><a class="footer__unorderlist--link" href="mailto: chrisdmar12@gmail.com">Nous contacter</a></li>
 
-        <li class="footer--list__link">
+        <li class="footer__unorderlist--list">
             Politique de confidentialité
         </li>
-        <li class="footer--list__link">
+        <li class="footer__unorderlist--list">
             Mentions légales
         </li>
-        <li class="footer--list__link">
+        <li class="footer__unorderlist--list">
             Conditions générales
         </li>
     </ul>

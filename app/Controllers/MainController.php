@@ -35,4 +35,35 @@ class MainController extends CoreController
     {
         $this->show('cart');
     }
+
+    /**
+     * Méthode s'occupant de la page du panier
+     *
+     * @return void
+     */
+    public function order()
+    {
+        d($_POST);
+        $this->show('cart', ['order' => $_POST['order']]);
+    }
+
+
+    /**
+     * Méthode s'occupant de la page du panier
+     *
+     * @return void
+     */
+    public function admin()
+    {
+        $this->show('admin');
+    }
+    /**
+     * Méthode s'occupant de la page du panier
+     *
+     * @return void
+     */
+    public function upload()
+    {
+        require __DIR__ . "/../views/main/upload.php";
+    }
 }

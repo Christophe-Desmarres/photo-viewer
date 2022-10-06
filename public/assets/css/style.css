@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 header {
     background-color: gray;
     font-weight: bold;
@@ -20,12 +24,19 @@ a {
     padding: 1rem;
 }
 
+.logo {
+    height: 6rem;
+}
+
 .header--title {
     font-size: 6rem;
     display: inline;
     color: white;
 }
 
+h1 {
+    font-size: 2rem;
+}
 
 .hr {
     display: block;
@@ -51,8 +62,8 @@ a {
 }
 
 .card {
-    width: 25%;
-    margin: 0.2rem;
+    display: block;
+    width: 100%;
     box-shadow: 0px 0px 3px black;
     border-radius: 5px;
     background-color: aquamarine;
@@ -97,14 +108,25 @@ a {
     border-color: #222;
 }
 
+/* 
+.galerie__preview {
+    width: 100%;
+}
 
-
-.image__list {
+.image__orderlist {
     display: flex;
     flex-wrap: wrap;
-    width: 90%;
-    margin: auto;
+
 }
+
+.image__list {
+    padding: 0.2rem;
+    display: block;
+    flex-basis: auto;
+    width: 20%;
+    height: auto;
+}
+
 
 .image__list-name {
     background-color: white;
@@ -112,11 +134,9 @@ a {
 }
 
 .image__list-img {
-    width: max-content;
+    width: 100%;
 
-}
-
-
+} */
 
 
 
@@ -125,50 +145,128 @@ a {
 
 
 
-footer {
-    background-color: gray;
-    height: 4.3rem;
-    font-weight: bold;
-    font-size: small;
-    border-radius: 5px 5px;
-}
 
-.footer--list {
+.galerie__preview {
     display: flex;
-    list-style-type: none;
-    padding-top: 0.7rem;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: Raleway;
+    transition: 0.3s;
 }
 
-li {
-    width: 48%;
-    height: 100%;
-    margin: 1%;
-    display: inline-block;
+.image__orderlist {
+    columns: 5 200px;
+    column-gap: 1rem;
+    width: 90%;
+    margin: 0;
+}
+
+.image__list {
     position: relative;
+    width: 150px;
+    margin: 0 0.5rem 0.5rem 0;
+    display: inline-block;
+    width: 100%;
+    border: solid 2px black;
+    padding: 0px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    transition: all .25s ease-in-out;
+    overflow: hidden;
+}
+
+.image__list:hover {
+    border-color: white;
+}
+
+.image__list-img {
+    position: relative;
+    width: 100%;
+    transition: all .25s ease-in-out;
+}
+
+
+.image__list-img:hover {
+    scale: 1.1;
+    transition: all .25s ease-in-out;
+}
+
+
+.image__list-name {
+    position: absolute;
+    bottom: 2%;
+    left: 0;
+    padding: 25px 15px 15px;
+    width: 100%;
+    font-family: "Raleway", sans-serif;
+    font-size: 16px;
     color: white;
-}
-
-a {
-    text-decoration: none;
-    color: white;
-}
-
-
-
-/* affichage du contenu des dossiers */
-li img {
-    height: 350px;
-    order: 1;
-}
-
-li p {
-    line-height: 32px;
-    padding-left: 10px;
+    opacity: 0;
+    background: linear-gradient(0deg,
+            rgba(0, 0, 0, 0.5) 0%,
+            rgba(255, 255, 255, 0) 100%);
+    transition: 0.3s;
 }
 
 
+.image__list:hover .image__list-name {
+    opacity: 1;
+}
 
-form {
+.img__inputselect {
+    position: absolute;
+    box-shadow: inset 2px 2px 3px #333;
+    left: 5%;
+    top: 5%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.input__name {
+    margin: 0.5rem;
+}
+
+
+.button__ordervalidate {
+    display: block;
+    width: 40%;
+    height: 5%;
+    font-size: 2em;
+    background-color: red;
+    margin: auto;
+    position: sticky;
+    top: 0;
+}
+
+
+
+.upload__form {
     width: 90%;
     background: #333;
     margin: 0 auto;
@@ -178,14 +276,13 @@ form {
     color: white;
 }
 
-form ol {
+.upload__form ol {
     padding-left: 0;
     display: flex;
     flex-wrap: wrap;
 }
 
-form li,
-ol li .preview>p {
+.upload__form li {
     background: #222;
     display: flex;
     justify-content: space-between;
@@ -196,18 +293,18 @@ ol li .preview>p {
 }
 
 /* affichage des fichiers pour le chargement */
-form img {
+.upload__form img {
     height: 100px;
     order: 1;
 }
 
-form p {
+.upload__form p {
     line-height: 32px;
     padding-left: 10px;
 }
 
-form label,
-form button {
+.upload__form label,
+.upload__form button {
     background-color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
@@ -217,14 +314,43 @@ form button {
     color: black;
 }
 
-form label:hover,
-form button:hover {
+.upload__form label:hover,
+.upload__form button:hover {
     background-color: #000;
     color: white;
 }
 
-form label:active,
-form button:active {
+.upload__form label:active,
+.upload__form button:active {
     background-color: #000;
+    color: white;
+}
+
+
+footer {
+    background-color: gray;
+    height: 4.3rem;
+    font-weight: bold;
+    font-size: small;
+    border-radius: 5px 5px;
+}
+
+.footer__unorderlist {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    height: 100%;
+}
+
+.footer__unorderlist--list {
+    width: 18%;
+    display: inline-block;
+    position: relative;
+    color: white;
+}
+
+.footer__unorderlist--link {
+    text-decoration: none;
     color: white;
 }

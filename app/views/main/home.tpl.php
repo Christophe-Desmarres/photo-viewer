@@ -37,22 +37,6 @@ closedir($dossierCourant);
     </div>
     <div class="hr"></div>
 
-
-    <h3>input type file multiple :</h3>
-    <form method="post" enctype="multipart/form-data" action="/action_page.php">
-        <div class="action">
-            <label for="image_uploads">Choisi tes images à charger (PNG, JPG)</label>
-            <input type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" multiple>
-        </div>
-        <div class="preview">
-            <p>No files currently selected for upload</p>
-        </div>
-        <div>
-            <button>Submit</button>
-        </div>
-    </form>
-
-
     <div class="hr"></div>
 
 </div>
