@@ -19,6 +19,7 @@
 </footer>
 
 <script src="./assets/js/inputFiles.js" defer></script>
+<script src="./assets/js/cart.js" defer></script>
 
 </body>
 

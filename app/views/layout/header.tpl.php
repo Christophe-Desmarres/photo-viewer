@@ -8,6 +8,7 @@
     <title><?= isset($viewVars['currentPage']) ? $viewVars['currentPage'] . " | " : '' ?>Image Viewer</title>
     <link rel="stylesheet" href="<?= $router->generate('main-home') ?>assets/css/reset.css">
     <link rel="stylesheet" href="<?= $router->generate('main-home') ?>assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
 
 </head>
 

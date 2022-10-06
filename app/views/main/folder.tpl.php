@@ -30,24 +30,25 @@ closedir($dossierCourant);
 
 ?>
 
-<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
 
 
 <div class='container'>
 
     <h1 class="titre">Album <?= $folder ?></h1>
+
     <form class="galerie__preview" action="/cart" method="post">
 
-        <button class="button__ordervalidate" type="submit" name="order">Valider mes choix pour impression</button>
+        <button class="button__ordervalidate" type="submit" name="order">Sélection terminé</button>
 
         <div class="image__orderlist">
             <?php
-            foreach ($chaine as $image) : ?>
+            foreach ($chaine as $index => $image) : ?>
 
                 <figure class="image__list">
                     <img class="image__list-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $folder . "/" . $image ?>">
+                    <img class="filigramme" src="<?= $router->generate('main-home') ?>assets/logo.png">
                     <figcaption class='image__list-name'><?= $image ?></figcaption>
-                    <input class="img__inputselect" type="checkbox" value="<?= $image ?>" name="selected[]">
+                    <input class="img__inputselect" type="checkbox" value="<?= $folder . "/" . $image ?>" name="selected[]">
                 </figure>
 
             <?php endforeach; ?>
