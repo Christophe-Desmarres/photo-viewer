@@ -36,19 +36,16 @@ a {
 
 h1 {
     font-size: 2rem;
-}
-
-.hr {
     display: block;
-    margin: auto;
-    width: 90%;
+    width: 100%;
+    font-weight: bold;
     padding: 1rem;
-    border-bottom: #333 solid 2px;
 }
 
-
-
-
+.description {
+    font-size: 1.2rem;
+    padding: 1rem;
+}
 
 .container {
     padding: 1rem;
@@ -92,21 +89,46 @@ h1 {
     display: flex;
 }
 
-.folderSelect {
+.folderSelect,
+.button__ordervalidate {
     display: inline-block;
+    font-size: 1.5rem;
     padding: 1rem;
     margin: 1rem;
     color: #fff;
     background-color: #222;
     border: 2px solid #fff;
     border-radius: 5px;
+    box-shadow: 5px 5px 7px #222;
 }
 
-.folderSelect:hover {
+.folderSelect:hover,
+.button__ordervalidate:hover {
     color: #222;
     background-color: #fff;
     border-color: #222;
+    box-shadow: 1px 1px 5px #222;
+    box-shadow: inset 5px 5px 7px #222;
+
 }
+
+
+.button__ordervalidate {
+    display: block;
+    z-index: 999;
+    width: 40%;
+    position: sticky;
+    top: 1%;
+
+}
+
+
+
+
+
+
+
+
 
 /* 
 .galerie__preview {
@@ -242,7 +264,7 @@ h1 {
 
 
 
-
+/* list in cart */
 
 .image__cartlist-img {
     width: 150px;
@@ -257,8 +279,14 @@ table {
 td,
 th {
     border: 1px solid #dddddd;
-    text-align: left;
+    /* text-align: left; */
+    text-align: center;
+    vertical-align: middle;
     padding: 8px;
+}
+
+.nblight {
+    margin-top: 0;
 }
 
 tr:nth-child(even) {
@@ -266,6 +294,19 @@ tr:nth-child(even) {
 }
 
 
+.plus,
+.minus {
+    width: 30%;
+    height: 30px;
+    padding: 0.2rem 0.5rem;
+}
+
+.nb {
+    width: 63%;
+    text-align: center;
+    font-size: large;
+    margin-bottom: 3%;
+}
 
 
 
@@ -278,27 +319,6 @@ tr:nth-child(even) {
     margin: 0.5rem;
 }
 
-
-.button__ordervalidate {
-    display: block;
-    z-index: 999;
-    width: 40%;
-    font-size: 1rem;
-    margin: 1rem;
-    padding: 1rem;
-    position: sticky;
-    top: 1%;
-    border-radius: 5px;
-    border: 2px solid #333;
-    background-color: #fff;
-    color: #333;
-}
-
-.button__ordervalidate:hover {
-    border-color: #fff;
-    background-color: #333;
-    color: #fff;
-}
 
 
 .upload__form {

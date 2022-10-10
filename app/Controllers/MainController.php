@@ -41,6 +41,16 @@ class MainController extends CoreController
      *
      * @return void
      */
+    public function send()
+    {
+        $this->show('cart_resume');
+    }
+
+    /**
+     * Méthode s'occupant de la page du panier
+     *
+     * @return void
+     */
     public function order()
     {
         d($_POST);

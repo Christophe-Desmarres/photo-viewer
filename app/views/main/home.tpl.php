@@ -26,7 +26,8 @@ closedir($dossierCourant);
 
 <div class='container'>
 
-    <h2>Listes de dossiers</h2>
+    <h1>Listes de dossiers</h1>
+    <p class="description">choissisez un cours</p>
     <div class='folderList'>
         <?php
         foreach ($dossiers as $dossier) : ?>
@@ -35,8 +36,6 @@ closedir($dossierCourant);
         <?php endforeach; ?>
 
     </div>
-    <div class="hr"></div>
 
-    <div class="hr"></div>
 
 </div>

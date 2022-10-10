@@ -22,13 +22,13 @@ class Photo extends CoreModel
     public $nbxlarge;
 
 
-    public function __construct($name, $folder)
+    public function __construct($name, $folder, $nblight = 0, $nblarge = 0, $nbxlarge = 0)
     {
         $this->name = $name;
         $this->folder = $folder;
-        $this->nblight = 0;
-        $this->nblarge = 0;
-        $this->nbxlarge = 0;
+        $this->nblight = $nblight;
+        $this->nblarge = $nblarge;
+        $this->nbxlarge = $nbxlarge;
     }
 
 
@@ -52,28 +52,26 @@ class Photo extends CoreModel
      * Set the value of nblight
      *
      * @return  self
-     */ 
+     */
     public function setNblightPlus()
     {
         return $this->nblight++;
-
     }
-        /**
+    /**
      * Set the value of nblight
      *
      * @return  self
-     */ 
+     */
     public function setNblightMinus()
     {
-       return $this->nblight--;
-
+        return $this->nblight--;
     }
 
     /**
      * Set the value of nblarge
      *
      * @return  self
-     */ 
+     */
     public function setNblarge($nblarge)
     {
         $this->nblarge = $nblarge;

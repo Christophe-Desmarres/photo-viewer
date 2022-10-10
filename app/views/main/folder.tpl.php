@@ -15,14 +15,29 @@ $dossiers = [];
  * 
  */
 
+// boucle pour renommer les noms de fichier sans espace
+while ($dossier = readdir($dossierCourant)) {
+    if ($dossier != "." && $dossier != "..") {
+        $str = preg_replace('/\s+/', '', $dossier);
+        // echo "<br> nom du fichier : $dossier";
+        // echo "<br>Avant : $nom_dossier/$dossier";
+        // echo "<br>Après : $nom_dossier/$str<br>";
+        rename("$nom_dossier/$dossier", "$nom_dossier/$str");
+    }
+}
+// Je ferme le dossier puis le réouvre pour le réutiliser dès le début
+closedir($dossierCourant);
+$dossierCourant = opendir($nom_dossier);
 
 // boucle pour parcourir tous les éléments du dossier $nom_dossier 
 while ($dossier = readdir($dossierCourant)) {
-    // condition pour ne pas prendre le . (dossier en cours) et .. (dosier parent) et garder les dossier uniquement en jpg
-    if ($dossier != "." && $dossier != ".." && strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "jpg") {
-        $chaine[] = $dossier;
-    } else if ($dossier != "." && $dossier != ".." && strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "") {
-        $dossiers[] = $dossier;
+    // condition pour ne pas prendre le . (dossier en cours) et .. (dossier parent) et garder les fichiers uniquement en jpg
+    if ($dossier != "." && $dossier != "..") {
+        if (strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "jpg") {
+            $chaine[] = $dossier;
+        } else if (strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "") {
+            $dossiers[] = $dossier;
+        }
     }
 }
 

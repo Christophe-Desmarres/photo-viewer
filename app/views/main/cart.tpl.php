@@ -8,13 +8,13 @@ $light = 0;
 
 <div class='container'>
 
-    <h2>panier</h2>
+    <h1>panier</h1>
 
 
 
-    <form class="cart__preview" action="/cart_validate" method="post">
+    <form class="cart__preview" action="/cart_send" method="post">
 
-        <button class="button__ordervalidate" type="submit" name="order">Valider mes choix pour impression</button>
+        <button class="button__ordervalidate" type="submit" name="ordertoprint">Valider mes choix pour impression</button>
 
         <div>
 
@@ -41,14 +41,21 @@ $light = 0;
                         <td><img class="image__cartlist-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $image ?>"></td>
                         <td><?= $photo->folder ?></td>
                         <td><?= $photo->name ?></td>
-                        <td id="nblight">
-                            <p data-nblight="<?= $photo->nblight ?>"><?= $photo->nblight ?></p>
+                        <td class="nblight">
+                            <input class="nb" data-nblight="<?= $photo->nblight ?>" name="<?= $image ?>[light]" value="<?= $photo->nblight ?>">
                             <div>
-                                <button class="plus" type="button" name="plus">+</button>
-                                <button class="minus" type="button" name="minus">-</button>
+                                <button class="plus light" type="button" name="plus">+</button>
+                                <button class="minus light" type="button" name="minus">-</button>
                             </div>
                         </td>
-                        <td id="nblarge<?= $index ?>"><?= $photo->nblarge ?></td>
+                        <td class="nblarge">
+                            <input class="nb" data-nblarge="<?= $photo->nblarge ?>" name="<?= $image ?>[large]" value="<?= $photo->nblarge ?>">
+                            <div>
+                                <button class="plus large" type="button" name="plus">+</button>
+                                <button class="minus large" type="button" name="minus">-</button>
+                            </div>
+
+                        </td>
                     </tr>
 
                 <?php }; ?>

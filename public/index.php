@@ -78,6 +78,15 @@ $router->addRoutes([
         'main-order' 
     ],
     [
+        'POST',
+        '/cart_send',
+        [
+            'method' => 'send',
+            'controller' => '\App\Controllers\MainController'
+        ],
+        'main-send' 
+    ],
+    [
         'GET',
         '/administration',
         [
