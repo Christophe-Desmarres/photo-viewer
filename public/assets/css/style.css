@@ -308,7 +308,13 @@ tr:nth-child(even) {
     margin-bottom: 3%;
 }
 
+input.nb {
+    width: auto;
+    background-color: transparent;
+    border: transparent;
+    pointer-events: none;
 
+}
 
 
 

@@ -27,7 +27,7 @@ class MainController extends CoreController
     }
 
     /**
-     * Méthode s'occupant de la page du panier
+     * Méthode s'occupant de la page d'affichage des photos du dossier
      *
      * @return void
      */
@@ -37,7 +37,18 @@ class MainController extends CoreController
     }
 
     /**
-     * Méthode s'occupant de la page du panier
+     * Méthode s'occupant de la page por choisir le nb d'impression
+     *
+     * @return void
+     */
+    public function order()
+    {
+        d($_POST);
+        $this->show('cart', ['order' => $_POST['order']]);
+    }
+
+    /**
+     * Méthode s'occupant d'afficher la page du récapitulatif du panier
      *
      * @return void
      */
@@ -47,14 +58,16 @@ class MainController extends CoreController
     }
 
     /**
-     * Méthode s'occupant de la page du panier
+     * Méthode s'occupant d'enregistrer la commande pour impression
      *
      * @return void
      */
-    public function order()
+    public function print()
     {
         d($_POST);
-        $this->show('cart', ['order' => $_POST['order']]);
+        mkdir("./assets/images/new", 0700);
+        echo "yes, we did it !!!";
+        // $this->show('cart_resume');
     }
 
 

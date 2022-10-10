@@ -1,4 +1,9 @@
 //alert("hello");
+
+var fs = require('fs');
+var file = require('file-system');
+
+
 console.log(document.title);
 if (document.title == "folder | Image Viewer") {
 

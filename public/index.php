@@ -38,18 +38,50 @@ else {
 // 4. Le nom de la route : pour identifier la route, on va suivre une convention
 //      - "NomDuController-NomDeLaMéthode"
 //      - ainsi pour la route /, méthode "home" du MainController => "main-home"
-$router->map(
-    'GET',
-    '/',
-    [
-        'method' => 'home',
-        'controller' => '\App\Controllers\MainController'
-    ],
-    'main-home'
-);
 
 
 $router->addRoutes([
+    // to see the folder list
+    [
+        'GET',
+        '/',
+        [
+            'method' => 'home',
+            'controller' => '\App\Controllers\MainController'
+        ],
+        'main-home'
+    ],
+    // to connect or register
+    [
+        'GET',
+        '/connect',
+        [
+            'method' => 'connect',
+            'controller' => '\App\Controllers\MainController'
+        ],
+        'main-connect'
+    ],
+    // to connect
+    [
+        'POST',
+        '/connect',
+        [
+            'method' => 'connexion',
+            'controller' => '\App\Controllers\MainController'
+        ],
+        'main-connexion'
+    ],
+    // to register
+    [
+        'POST',
+        '/register',
+        [
+            'method' => 'register',
+            'controller' => '\App\Controllers\MainController'
+        ],
+        'main-register'
+    ],
+    // to see every image at the selected folder to choose them
     [
         'GET',
         '/images/[:folder]',
@@ -57,8 +89,9 @@ $router->addRoutes([
             'method' => 'folder',
             'controller' => '\App\Controllers\MainController'
         ],
-        'main-folder' 
+        'main-folder'
     ],
+    // to see image selected for order
     [
         'GET',
         '/cart',
@@ -66,8 +99,9 @@ $router->addRoutes([
             'method' => 'cart',
             'controller' => '\App\Controllers\MainController'
         ],
-        'main-cart' 
+        'main-cart'
     ],
+    // to see the selected image and choose number of impression to print
     [
         'POST',
         '/cart',
@@ -75,8 +109,9 @@ $router->addRoutes([
             'method' => 'order',
             'controller' => '\App\Controllers\MainController'
         ],
-        'main-order' 
+        'main-order'
     ],
+    // to see the resume of cart to validate them
     [
         'POST',
         '/cart_send',
@@ -84,8 +119,19 @@ $router->addRoutes([
             'method' => 'send',
             'controller' => '\App\Controllers\MainController'
         ],
-        'main-send' 
+        'main-send'
     ],
+    // to create folder with image to print according size
+    [
+        'POST',
+        '/print',
+        [
+            'method' => 'print',
+            'controller' => '\App\Controllers\MainController'
+        ],
+        'main-print'
+    ],
+    // to see administration page (with order)
     [
         'GET',
         '/administration',
@@ -93,8 +139,9 @@ $router->addRoutes([
             'method' => 'admin',
             'controller' => '\App\Controllers\MainController'
         ],
-        'main-admin' 
+        'main-admin'
     ],
+    // to upload files to print in folder
     [
         'POST',
         '/upload',
@@ -102,7 +149,7 @@ $router->addRoutes([
             'method' => 'upload',
             'controller' => '\App\Controllers\MainController'
         ],
-        'main-upload' 
+        'main-upload'
     ],
 ]);
 
