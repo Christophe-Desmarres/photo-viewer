@@ -9,7 +9,7 @@ d($_POST);
 
 <div class='container'>
 
-    <h1>panier</h1>
+    <h1>Récapitulatif de la commande</h1>
 
 
 
@@ -57,10 +57,10 @@ d($_POST);
                             <td><?= $photo->folder ?></td>
                             <td><?= $photo->name ?></td>
                             <td class="nblight">
-                                <input class="nb" name="nblight<?= $photo->name ?>" value="<?= $photo->nblight ?>">
+                                <input class="nb" name="nblight/<?= $photo->folder . "/" . $photo->name ?>" value="<?= $photo->nblight ?>">
                             </td>
                             <td class="nblarge">
-                                <input class="nb" name="nblarge<?= $photo->name ?>" value="<?= $photo->nblarge ?>">
+                                <input class="nb" name="nblarge/<?= $photo->folder . "/" . $photo->name ?>" value="<?= $photo->nblarge ?>">
                             </td>
                         </tr>
 
