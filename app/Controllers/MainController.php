@@ -66,10 +66,13 @@ class MainController extends CoreController
     public function print()
     {
         d($_POST);
+        // je créé l'architecture dossier pour récupérer les images commandées
         mkdir("./assets/commandes/commande_07 gérard mensoif", 0700);
         mkdir("./assets/commandes/commande_07 gérard mensoif/10x15", 0700);
         mkdir("./assets/commandes/commande_07 gérard mensoif/15x20", 0700);
+
         foreach ($_POST as $image => $number) {
+            // enleve le traitement de la première valeur récupérée du formulaire
             if ($image != "print") {
                 // selectionne uniquement le nom de l'image
                 $size = explode("/", $image)[0];
@@ -85,13 +88,17 @@ class MainController extends CoreController
                 $folder = preg_replace('/_/', ' ', $folder);
                 // d($number);
 
+                // boucle pour copier les images ds un dossier
                 for ($i = 0; $i < $number; $i++) {
+                    $extension = strtolower(pathinfo("./assets/images/$folder/$name", PATHINFO_EXTENSION));
+                    $new_name = explode(".$extension", $name)[0] . "($i).$extension";
+
                     if ($size == "nblight") {
-                        copy("./assets/images/$folder/$name", "./assets/commandes/commande_07 gérard mensoif/10x15/($i)$name");
+                        copy("./assets/images/$folder/$name", "./assets/commandes/commande_07 gérard mensoif/10x15/$new_name");
                     } else {
-                        copy("./assets/images/$folder/$name", "./assets/commandes/commande_07 gérard mensoif/15x20/($i)$name");
+                        copy("./assets/images/$folder/$name", "./assets/commandes/commande_07 gérard mensoif/15x20/$new_name");
                     }
-                    echo "<br> j'imprime le fichier $folder/$name au format $size";
+                    echo "<br> j'imprime le fichier $folder/$name au format " . ($size == "nblight" ? "10x15" : "15x20");
                 }
             }
         }
