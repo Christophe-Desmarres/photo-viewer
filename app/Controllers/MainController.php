@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Photo;
 
 class MainController extends CoreController
 {
@@ -13,7 +14,21 @@ class MainController extends CoreController
      */
     public function home()
     {
+        $photos = new Photo();
+        d($photos->findAll());
+        d(Photo::findAll());
         $this->show('home');
+    }
+
+        /**
+     * Méthode s'occupant de la page d'accueil
+     *
+     * @return void
+     */
+    public function connect()
+    {
+
+        $this->show('connexion');
     }
 
     /**

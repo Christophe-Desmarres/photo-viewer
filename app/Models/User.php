@@ -19,13 +19,16 @@ class User extends CoreModel
     public $firstname;
     public $lastname;
     public $email;
+    public $password;
 
 
-    public function __construct($firstname, $lastname)
+    public function __construct($pseudo, $firstname, $lastname, $email, $password)
     {
-        $this->firstname = $firstname;
+        $this->pseudo = $pseudo;
         $this->lastname = $lastname;
-
+        $this->firstname = $firstname;
+        $this->email = $email;
+        $this->$password = $password;
     }
 
 

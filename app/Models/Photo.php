@@ -17,18 +17,18 @@ class Photo extends CoreModel
 
     public $name;
     public $folder;
-    public $nblight;
-    public $nblarge;
-    public $nbxlarge;
+    // public $nblight;
+    // public $nblarge;
+    // public $nbxlarge;
 
 
-    public function __construct($name, $folder, $nblight = 0, $nblarge = 0, $nbxlarge = 0)
+    public function __construct($name = '', $folder = '') // , $nblight = 0, $nblarge = 0, $nbxlarge = 0)
     {
         $this->name = $name;
         $this->folder = $folder;
-        $this->nblight = $nblight;
-        $this->nblarge = $nblarge;
-        $this->nbxlarge = $nbxlarge;
+        // $this->nblight = $nblight;
+        // $this->nblarge = $nblarge;
+        // $this->nbxlarge = $nbxlarge;
     }
 
 
@@ -36,8 +36,13 @@ class Photo extends CoreModel
     {
     }
 
-    public function findAll()
+    public static function findAll()
     {
+        $db = Database::getPDO();
+        $sql = "SELECT * from photo";
+        $stmt = $db->query($sql);
+        $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $result;
     }
 
     public function insert()
