@@ -15,14 +15,11 @@ class Order extends CoreModel
     // Les propriétés représentent les champs
     // Attention il faut que les propriétés aient le même nom (précisément) que les colonnes de la table
 
-    public $user;
-    public $photo_list;
 
 
-    public function __construct($firstname, $lastname)
+
+    public function __construct()
     {
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
 
     }
 
@@ -37,6 +34,15 @@ class Order extends CoreModel
 
     public function insert()
     {
+        $db = Database::getPDO();
+        $sql = "
+        INSERT INTO `photo` (`path`) VALUES (:path)
+        ";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(":path", $this->path, PDO::PARAM_STR);
+        $stmt->execute();
+        // retourne l'id du dernier élément inséréde cette connexion db
+        return $db->lastInsertId();
     }
 
     public function update()

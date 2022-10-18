@@ -15,20 +15,16 @@ class Photo extends CoreModel
     // Les propriétés représentent les champs
     // Attention il faut que les propriétés aient le même nom (précisément) que les colonnes de la table
 
-    public $name;
-    public $folder;
-    // public $nblight;
-    // public $nblarge;
-    // public $nbxlarge;
+    public $path;
+    public $nblight;
+    public $nblarge;
 
 
-    public function __construct($name = '', $folder = '') // , $nblight = 0, $nblarge = 0, $nbxlarge = 0)
+    public function __construct($path = '', $nblight = 0, $nblarge = 0)
     {
-        $this->name = $name;
-        $this->folder = $folder;
-        // $this->nblight = $nblight;
-        // $this->nblarge = $nblarge;
-        // $this->nbxlarge = $nbxlarge;
+        $this->path = $path;
+        $this->nblight = $nblight;
+        $this->nblarge = $nblarge;
     }
 
 
@@ -36,17 +32,30 @@ class Photo extends CoreModel
     {
     }
 
-    public static function findAll()
+    public function findAll()
     {
         $db = Database::getPDO();
         $sql = "SELECT * from photo";
         $stmt = $db->query($sql);
         $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+        //ferme la connexion
+        $db = null;
         return $result;
     }
 
+
+    // insere les données d'1 photo pour 1 commande
     public function insert()
     {
+        $db = Database::getPDO();
+        $sql = "
+        INSERT INTO `photo` (`path`) VALUES (:path)
+        ";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(":path", $this->path, PDO::PARAM_STR);
+        $stmt->execute();
+        // retourne l'id du dernier élément inséréde cette connexion db
+        return $db->lastInsertId();
     }
 
     public function update()

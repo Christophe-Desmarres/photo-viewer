@@ -1,16 +1,15 @@
 <?php
 
 use App\Models\Photo;
-
+d($liste);
 $folder = "";
-$light = 0;
+$nblight = 0;
+$nblarge = 0;
 ?>
 
 <div class='container'>
 
     <h1>panier</h1>
-
-
 
     <form class="cart__preview" action="/cart_send" method="post">
 
@@ -28,28 +27,27 @@ $light = 0;
                 </tr>
 
                 <?php
-                foreach ($_POST['selected'] as $index => $image) {
+                foreach ($liste as $index => $image) {
                     $name = explode("/", $image)[1];
                     if ($folder != explode("/", $image)[0]) {
                         $folder = explode("/", $image)[0];
                         echo "<h1 class='titre'>Album $folder</h1>";
                     }
-                    $photo = new Photo($image, $folder);
                 ?>
 
                     <tr class="row row<?= $index ?>">
                         <td><img class="image__cartlist-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $image ?>"></td>
-                        <td><?= $photo->folder ?></td>
-                        <td><?= $photo->name ?></td>
+                        <td><?= $folder ?></td>
+                        <td><?= $name ?></td>
                         <td class="nblight">
-                            <input class="nb" data-nblight="<?= $photo->nblight ?>" name="<?= $image ?>[light]" value="<?= $photo->nblight ?>">
+                            <input class="nb" data-nblight="<?= $nblight ?>" name="<?= $image ?>[light]" value="<?= $nblight ?>">
                             <div>
                                 <button class="plus light" type="button" name="plus">+</button>
                                 <button class="minus light" type="button" name="minus">-</button>
                             </div>
                         </td>
                         <td class="nblarge">
-                            <input class="nb" data-nblarge="<?= $photo->nblarge ?>" name="<?= $image ?>[large]" value="<?= $photo->nblarge ?>">
+                            <input class="nb" data-nblarge="<?= $nblarge ?>" name="<?= $image ?>[large]" value="<?= $nblarge ?>">
                             <div>
                                 <button class="plus large" type="button" name="plus">+</button>
                                 <button class="minus large" type="button" name="minus">-</button>
@@ -58,7 +56,9 @@ $light = 0;
                         </td>
                     </tr>
 
-                <?php }; ?>
+                <?php
+                };
+                ?>
             </table>
 
         </div>

@@ -14,13 +14,25 @@ class MainController extends CoreController
      */
     public function home()
     {
-        $photos = new Photo();
-        d($photos->findAll());
-        d(Photo::findAll());
-        $this->show('home');
+
+        $nom_dossier = "./assets/images/";
+        // open the directory choose
+        $dossierCourant = opendir($nom_dossier);
+        $dossiers = [];
+
+        // boucle pour parcourir tous les éléments du dossier $nom_dossier 
+        while ($dossier = readdir($dossierCourant)) {
+            // condition pour ne pas prendre le . (dossier en cours) et .. (dosier parent) et garder les dossier uniquement (sans extension)
+            if ($dossier != "." && $dossier != ".." && strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "") {
+                $dossiers[] = $dossier;
+            }
+        }
+        closedir($dossierCourant);
+
+        $this->show('home', ['dossiers' => $dossiers]);
     }
 
-        /**
+    /**
      * Méthode s'occupant de la page d'accueil
      *
      * @return void
@@ -38,7 +50,45 @@ class MainController extends CoreController
      */
     public function folder($folder)
     {
-        $this->show('folder', ['folder' => rawurldecode(utf8_encode($folder))]);
+        // pour décoder les caractère spéciaux et les accents
+        $folder = rawurldecode(utf8_encode($folder));
+        $nom_dossier = "./assets/images/" . $folder;
+        // open the directory choose
+        $dossierCourant = opendir($nom_dossier);
+        $chaine = [];
+        $dossiers = [];
+
+        /**
+         * test à faire avec scandir()
+         * source : https://www.w3schools.com/php/func_directory_scandir.asp
+         */
+
+        // boucle pour renommer les noms de fichier sans espace
+        while ($dossier = readdir($dossierCourant)) {
+            if ($dossier != "." && $dossier != "..") {
+                $str = preg_replace('/\s+/', '', $dossier);
+                rename("$nom_dossier/$dossier", "$nom_dossier/$str");
+            }
+        }
+        // Je ferme le dossier puis le réouvre pour le réutiliser dès le début
+        closedir($dossierCourant);
+        $dossierCourant = opendir($nom_dossier);
+
+        // boucle pour parcourir tous les éléments du dossier $nom_dossier 
+        while ($dossier = readdir($dossierCourant)) {
+            // condition pour ne pas prendre le . (dossier en cours) et .. (dossier parent) et garder les fichiers uniquement en jpg
+            if ($dossier != "." && $dossier != "..") {
+                if (strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "jpg") {
+                    $chaine[] = $dossier;
+                } else if (strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "") {
+                    $dossiers[] = $dossier;
+                }
+            }
+        }
+
+        closedir($dossierCourant);
+
+        $this->show('folder', ['folder' => $folder, 'chaine' => $chaine, 'dossiers' => $dossiers]);
     }
 
     /**
@@ -58,8 +108,22 @@ class MainController extends CoreController
      */
     public function order()
     {
-        d($_POST);
-        $this->show('cart', ['order' => $_POST['order']]);
+
+        // TODO
+        //création objet photo
+        // foreach ($_POST['selected'] as $index => $image) {
+        //     $folder = explode("/", $image)[0];
+        //     echo "<h1 class='titre'>Album $folder</h1>";
+        //     // $photo = new Photo($image);
+        //     // $id = $photo->insert();
+        //     // d($id);
+        // }
+
+
+        //creation id order
+        //ajout photo associé à order
+
+        $this->show('cart', ['order' => $_POST['order'], 'liste' => $_POST['selected']]);
     }
 
     /**
