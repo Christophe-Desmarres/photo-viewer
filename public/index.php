@@ -11,6 +11,8 @@ require __DIR__ . '/../app/Controllers/CoreController.php';
 require __DIR__ . '/../app/Controllers/MainController.php';
 require __DIR__ . '/../app/Controllers/ErrorController.php';
 
+// On ouvre la session : création variable $_SESSION[]
+session_start();
 
 // création de l'objet router
 // Cet objet va gérer les routes pour nous, et surtout il va 

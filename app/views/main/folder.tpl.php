@@ -9,10 +9,13 @@
         <div class="image__orderlist">
             <?php foreach ($chaine as $index => $image) : ?>
                 <figure class="image__list">
-                    <img class="image__list-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $folder . "/" . $image ?>">
-                    <img class="filigramme" src="<?= $router->generate('main-home') ?>assets/logo.png">
-                    <figcaption class='image__list-name'><?= $image ?></figcaption>
-                    <input class="img__inputselect" type="checkbox" value="<?= $folder . "/" . $image ?>" name="selected[]">
+                    <label class="img__labelselect">
+                        <img class="image__list-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $folder . "/" . $image ?>">
+                        <img class="filigramme" src="<?= $router->generate('main-home') ?>assets/logo.png">
+                        <figcaption class='image__list-name'><?= $image ?></figcaption>
+                        <!-- <span class="invisible-link" aria-hidden="true"></span> -->
+                        <input class="img__inputselect" type="checkbox" value="<?= $folder . "/" . $image ?>" name="selected[]">
+                    </label>
                 </figure>
             <?php endforeach; ?>
         </div>

@@ -109,21 +109,13 @@ class MainController extends CoreController
     public function order()
     {
 
+        $_SESSION['liste'] = $_POST['selected'];
+
         // TODO
-        //création objet photo
-        // foreach ($_POST['selected'] as $index => $image) {
-        //     $folder = explode("/", $image)[0];
-        //     echo "<h1 class='titre'>Album $folder</h1>";
-        //     // $photo = new Photo($image);
-        //     // $id = $photo->insert();
-        //     // d($id);
-        // }
-
-
         //creation id order
         //ajout photo associé à order
 
-        $this->show('cart', ['order' => $_POST['order'], 'liste' => $_POST['selected']]);
+        $this->show('cart', ['liste' => $_POST['selected']]);
     }
 
     /**
@@ -133,7 +125,11 @@ class MainController extends CoreController
      */
     public function send()
     {
-        $this->show('cart_resume');
+
+        $_SESSION['liste'] = $_POST['selected'];
+        $_SESSION['customer'] = $_POST['customer'];
+
+        $this->show('cart_resume', ['liste' => $_POST['selected'], 'customer' => $_POST['customer']]);
     }
 
     /**

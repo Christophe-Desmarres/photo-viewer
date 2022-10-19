@@ -1,3 +1,7 @@
+<?php
+d($_SESSION);
+?>
+
 <div class='container'>
 
     <h1>Listes de dossiers</h1>
