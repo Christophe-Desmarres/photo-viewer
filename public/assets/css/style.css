@@ -133,7 +133,6 @@ main {
     width: 40%;
     position: sticky;
     top: 1%;
-
 }
 
 
@@ -285,6 +284,15 @@ main {
     margin: auto;
 }
 
+.cart__preview--button {
+    display: flex;
+    justify-content: space-around;
+    z-index: 999;
+    position: sticky;
+    top: 1%;
+
+}
+
 .input__list {
     display: flex;
     flex-wrap: wrap;
@@ -329,6 +337,10 @@ main {
     width: 150px;
 }
 
+.image__cartlist-icon {
+    width: 50px;
+}
+
 .cart__view {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -342,6 +354,7 @@ th {
     text-align: center;
     vertical-align: middle;
     padding: 8px;
+    font-weight: bold;
 }
 
 .nblight {

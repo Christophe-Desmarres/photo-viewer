@@ -2,7 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Models\Photo;
+use App\Models\Order;
+use App\Models\OrderPhoto;
 
 class MainController extends CoreController
 {
@@ -98,7 +99,9 @@ class MainController extends CoreController
      */
     public function cart()
     {
-        $this->show('cart');
+
+
+        $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order']), 'customer' => $_SESSION['customer']]);
     }
 
     /**
@@ -109,14 +112,43 @@ class MainController extends CoreController
     public function order()
     {
 
-        $_SESSION['liste'] = $_POST['selected'];
+        // création d'un numéro de commande si non existant ds variable session 'id_order'
+        Order::create();
 
-        // TODO
-        //creation id order
-        //ajout photo associé à order
+        if (!isset($_SESSION['OrderPhoto']) || $_SESSION['OrderPhoto'] !== $_POST['selected']) {
+            // entrée des photos choisi par l'utilisateur ds la bdd en lien avec le numéro de commande
+            foreach ($_POST['selected'] as $index => $path) {
+                // je récupere le dossier et le nom du fichier
+                $folder = explode("/", $path)[0];
+                $name = explode("/", $path)[1];
+                // j'instancie la classe OrderPhoto pour créer un objet photo relié à un id_order
+                $photo = new OrderPhoto($_SESSION['id_order'], $folder, $name);
+                // j'ajout l'objet dans la bdd
+                $photo->insert();
+            }
+        }
+        // je créé la variable de session 'OrderPhotoListName' qui contient la iste des photos selectionnées pour cette commande
+        OrderPhoto::findAllName($_SESSION['id_order']);
 
-        $this->show('cart', ['liste' => $_POST['selected']]);
+        $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order']), 'customer' => $_SESSION['customer']]);
     }
+
+
+    /**
+     * Méthode s'occupant de supprimer une photo du panier
+     *
+     * @return void
+     */
+    public function delete($id)
+    {
+        echo "suppression photo n°$id";
+        OrderPhoto::delete($id);
+        // je créé la variable de session 'OrderPhotoListName' qui contient la iste des photos selectionnées pour cette commande
+        OrderPhoto::findAllName($_SESSION['id_order']);
+        $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order']), 'customer' => $_SESSION['customer']]);
+    }
+
+
 
     /**
      * Méthode s'occupant d'afficher la page du récapitulatif du panier
@@ -126,10 +158,28 @@ class MainController extends CoreController
     public function send()
     {
 
-        $_SESSION['liste'] = $_POST['selected'];
+        // TODO
+        // ajout order avec customer et id_order
+
+        // mise à jour des quantités
+        foreach ($_POST['selected'] as $path => $size) {
+            $folder = explode("/", $path)[0];
+            $name = explode("/", $path)[1];
+            $photoObject = new OrderPhoto($_SESSION['id_order'], $folder, $name);
+            $photoObject->setNblight($size['light']);
+            $photoObject->setNblarge($size['large']);
+            $photoObject->update($size['id']);
+
+            // je recherche si la photo existe
+            // je complete les infos
+            // j'ajoute la photo ds la commande
+
+        }
+
+
         $_SESSION['customer'] = $_POST['customer'];
 
-        $this->show('cart_resume', ['liste' => $_POST['selected'], 'customer' => $_POST['customer']]);
+        $this->show('cart_resume', ['liste' => OrderPhoto::findAll($_SESSION['id_order']),  'customer' => $_SESSION['customer']]);
     }
 
     /**
@@ -140,11 +190,26 @@ class MainController extends CoreController
      */
     public function print()
     {
+
+
+
+        // TODO
+        // je créer un customer ds table customer
+        // je créer un order relié au customer ds table order_customer
+        // j'ajoute les données des photos ds table photo
+        // j'ajoute les photos au order photo ds table order_photo
+
+        // je regarde si l'utilisateur veux valider sa commande ou commander d'autres photos
+        // si validation => "merci aurevoir, aller au gichet suivant pour regler et récuperer la commande"
+        // je vide les variables session liste et session customer
+
+
+
         d($_POST);
         // je créé l'architecture dossier pour récupérer les images commandées
-        mkdir("./assets/commandes/commande_07 gérard mensoif", 0700);
-        mkdir("./assets/commandes/commande_07 gérard mensoif/10x15", 0700);
-        mkdir("./assets/commandes/commande_07 gérard mensoif/15x20", 0700);
+        mkdir("./assets/commandes/commande_" . $_SESSION['id_order'], 0700);
+        mkdir("./assets/commandes/commande_" . $_SESSION['id_order'], 0700);
+        mkdir("./assets/commandes/commande_" . $_SESSION['id_order'], 0700);
 
         foreach ($_POST as $image => $number) {
             // enleve le traitement de la première valeur récupérée du formulaire

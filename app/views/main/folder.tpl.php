@@ -13,8 +13,7 @@
                         <img class="image__list-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $folder . "/" . $image ?>">
                         <img class="filigramme" src="<?= $router->generate('main-home') ?>assets/logo.png">
                         <figcaption class='image__list-name'><?= $image ?></figcaption>
-                        <!-- <span class="invisible-link" aria-hidden="true"></span> -->
-                        <input class="img__inputselect" type="checkbox" value="<?= $folder . "/" . $image ?>" name="selected[]">
+                        <input class="img__inputselect" type="checkbox" value="<?= $folder . "/" . $image ?>" name="selected[]" <?= in_array("$folder/$image",$_SESSION['OrderPhotoListName'])?"checked":"" ?>>
                     </label>
                 </figure>
             <?php endforeach; ?>

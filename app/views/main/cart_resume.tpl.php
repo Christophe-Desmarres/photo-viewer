@@ -1,12 +1,6 @@
 <?php
-
-use App\Models\Photo;
-
-$folder = "";
-
 d($_POST);
-d($_SESSION);
-d($customer);
+d($liste);
 ?>
 
 <div class='container'>
@@ -17,8 +11,10 @@ d($customer);
 
     <form class="cart__preview" action="/print" method="post">
 
-        <button class="button__ordervalidate" type="submit" name="print">Valider mes choix pour impression</button>
-
+        <div class="cart__preview--button">
+            <button class="button__ordervalidate" type="submit" name="print">Valider mes choix pour impression</button>
+            <button class="button__ordervalidate" type="submit" name="other_order">Commander d'autres photos</button>
+        </div>
         <div>reference client :
             <p>Pseudo : <?= $customer['pseudo'] ?></p>
             <p>Email : <?= $customer['email'] ?></p>
@@ -29,48 +25,48 @@ d($customer);
 
         <table>
             <tr>
-                <th>image</th>
-                <th>dossier</th>
-                <th>nom</th>
-                <th>nb 10x15</th>
-                <th>nb 15x20</th>
+                <th>Image</th>
+                <th>Dossier</th>
+                <th>Nom</th>
+                <th>format 10x15cm</th>
+                <th>format 15x20cm</th>
             </tr>
 
             <?php
-            foreach ($liste as $image => $size) {
+            $folder = "";
+            $price_light = 0;
+            $price_large = 0;
+            foreach ($liste as $index => $image) {
                 if ($image !== 'ordertoprint') {
                     // d($image);
                     // d($size);
                     // selectionne uniquement le nom de l'image
-                    $name = explode("/", $image)[1];
+                    //$name = explode("/", $image)[1];
                     // remplace le _jpg par .jpg du au changement de nom automatique lors du passage en tableau indexé du nom avec light ou large
-                    $name = preg_replace('/_jpg/', '.jpg', $name);
+                    //$name = preg_replace('/_jpg/', '.jpg', $name);
 
-                    if ($folder != preg_replace('/_/', ' ', explode("/", $image)[0])) {
-                        // même principe avec le nom du dossier qu'avec le nom du fichier
-                        $folder = explode("/", $image)[0];
-                        // les espaces du nom de dossiers sont remplacés automatiquement par des '_' donc on remets des espaces
-                        $folder = preg_replace('/_/', ' ', $folder);
+                    // if ($folder != preg_replace('/_/', ' ', explode("/", $image)[0])) {
+                    //     // même principe avec le nom du dossier qu'avec le nom du fichier
+                    //     $folder = explode("/", $image)[0];
+                    //     // les espaces du nom de dossiers sont remplacés automatiquement par des '_' donc on remets des espaces
+                    //     $folder = preg_replace('/_/', ' ', $folder);
 
-                        echo "<h1 class='titre'>Album $folder</h1>";
-                    }
+                    //     echo "<h1 class='titre'>Album $folder</h1>";
+                    // }
 
-                    // echo  "<br>" . $image;
-                    // echo  "<br>" . $size['light'] . " 10x15cm";
-                    // echo  "<br>" . $size['large'] . " 15x20cm";
-
-                    // $photo = new Photo($name, $folder, $size['light'], $size['large']);
+                    $price_light += $image->nblight;
+                    $price_large += $image->nblarge;
             ?>
 
-                    <tr class="row row<?= $image ?>">
-                        <td><img class="image__cartlist-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $folder . "/" . $name ?>"></td>
-                        <td><?= $folder ?></td>
-                        <td><?= $name ?></td>
+                    <tr class="row row<?= $image->id ?>">
+                        <td><img class="image__cartlist-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $image->folder . "/" . $image->name ?>"></td>
+                        <td><?= $image->folder ?></td>
+                        <td><?= $image->name ?></td>
                         <td class="nblight">
-                            <input class="nb" name="nblight/<?= $image ?>" value="<?= $size['light'] ?>">
+                            <input class="nb" style="color:<?= $image->nblight == 0 ? "red" : "" ?>;" name="nblight/<?= $image->name ?>" value="<?= $image->nblight ?>">
                         </td>
                         <td class="nblarge">
-                            <input class="nb" name="nblarge/<?= $image ?>" value="<?= $size['large'] ?>">
+                            <input class="nb" style="color:<?= $image->nblarge == 0 ? "red" : "" ?>;" name="nblarge/<?= $image->name ?>" value="<?= $image->nblarge ?>">
                         </td>
                     </tr>
 
@@ -78,7 +74,22 @@ d($customer);
 
                 }
             }; ?>
+            <tr class="row">
+                <td>TOTAL</td>
+                <td></td>
+                <td></td>
+                <td><?= $price_light ?></td>
+                <td><?= $price_large ?></td>
+            </tr>
         </table>
+        <table>
+
+
+        </table>
+
+        <p> <?= $price_light ?> photos au format 10x15cm : <?= $price_light * 2 ?>€</p>
+        <p><?= $price_large ?> photos au format 15x20cm : <?= $price_large * 3 ?>€</p>
+        <p>cout total : <?= $price_light * 2 + $price_large * 3 ?>€</p>
 
     </form>
 

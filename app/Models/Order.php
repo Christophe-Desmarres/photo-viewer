@@ -20,7 +20,6 @@ class Order extends CoreModel
 
     public function __construct()
     {
-
     }
 
 
@@ -31,6 +30,20 @@ class Order extends CoreModel
     public function findAll()
     {
     }
+    public static function create()
+    {
+        // Récupération des données du fichier de config
+        // la fonction parse_ini_file parse le fichier et retourne un array associatif
+        $configData = parse_ini_file(__DIR__ . '/../config.ini');
+        
+        // création d'un numéro de commande si non existant
+        if (!isset($_SESSION['id_order']) || $_SESSION['id_order'] == null) {
+            // format aaaammjj-hhmmss
+            // 20221020-215107
+            $_SESSION['id_order'] = $configData['MACHINE_NAME'] . "-" . date("Ymd-Gis");
+        }
+    }
+
 
     public function insert()
     {
@@ -47,36 +60,5 @@ class Order extends CoreModel
 
     public function update()
     {
-    }
-
-    /**
-     * Set the value of nblight
-     *
-     * @return  self
-     */
-    public function setNblightPlus()
-    {
-        return $this->nblight++;
-    }
-    /**
-     * Set the value of nblight
-     *
-     * @return  self
-     */
-    public function setNblightMinus()
-    {
-        return $this->nblight--;
-    }
-
-    /**
-     * Set the value of nblarge
-     *
-     * @return  self
-     */
-    public function setNblarge($nblarge)
-    {
-        $this->nblarge = $nblarge;
-
-        return $this;
     }
 }

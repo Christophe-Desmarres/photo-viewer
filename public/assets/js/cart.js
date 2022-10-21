@@ -1,11 +1,16 @@
 console.log(document.title);
 if (document.title == "cart | Image Viewer") {
 
+    /**
+     * 
+     * bouton plus et moins de chaque photo
+     * 
+     */
+
     const imgList = document.querySelectorAll(".row");
-    console.log(imgList);
 
     // pour chaque ligne
-    // je selctionne les bouton + et -
+    // je selectionne les bouton + et -
     // j'ajoute un listener pour ajouter ou diminuer le nombre
 
     imgList.forEach(row => {
@@ -35,9 +40,8 @@ if (document.title == "cart | Image Viewer") {
     function nbLightPlus(e) {
         let btn = e.currentTarget;
         let nblight = btn.closest('td').querySelector('input');
-        console.log(nblight.value);
         nblight.dataset.nblight++;
-        nblight.steAttribute('value', nblight.value++);
+        nblight.setAttribute('value', nblight.value++);
     }
 
     // decrease number of large format
@@ -56,5 +60,43 @@ if (document.title == "cart | Image Viewer") {
         let nblarge = btn.closest('td').querySelector('input');
         nblarge.dataset.nblarge++;
         nblarge.value++;
+    }
+
+
+
+    /**
+     * 
+     * bouton +1 pour chaque format
+     * 
+     */
+
+    // je selectionne les bouton ajout +1
+    const button1015 = document.querySelector("#order1015");
+    const button1520 = document.querySelector("#order1520");
+
+    button1015.addEventListener('click', addOneAllLight);
+    button1520.addEventListener('click', addOneAllLarge);
+
+    // add 1 to all light format
+    function addOneAllLight() {
+        let light = document.querySelectorAll('td.nblight input.nb');
+
+        light.forEach(nblight => {
+            console.log(nblight);
+            nblight.dataset.nblight++;
+            nblight.value++;
+        });
+    }
+
+    // add 1 to all large format
+    function addOneAllLarge() {
+        let large = document.querySelectorAll('td.nblarge input.nb');
+
+        large.forEach(nblarge => {
+            console.log(nblarge);
+            nblarge.dataset.nblarge++;
+            nblarge.value++;
+        });
+
     }
 }

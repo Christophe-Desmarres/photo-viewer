@@ -29,6 +29,33 @@ closedir($dossierCourant);
     <h1>Espace Administration</h1>
 
 
+
+
+// TODO <br>
+// je récupere la liste des commandes non réalisée <br>
+// je clique sur le bouton pour récupérer la commande (création des dossiers avec les images dedans ou impression directe) <br>
+// modification du status de la commande comme réalisée <br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <form class="upload__form" action="/upload" method="post" enctype="multipart/form-data">
         Select image to upload:
         <input class="input__name" type="file" name="fileToUpload" id="fileToUpload">

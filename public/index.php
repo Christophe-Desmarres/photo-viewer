@@ -113,6 +113,16 @@ $router->addRoutes([
         ],
         'main-order'
     ],
+        // to see the selected image and choose number of impression to print
+        [
+            'GET',
+            '/cart/delete/[i:id]',
+            [
+                'method' => 'delete',
+                'controller' => '\App\Controllers\MainController'
+            ],
+            'main-delete'
+        ],
     // to see the resume of cart to validate them
     [
         'POST',
