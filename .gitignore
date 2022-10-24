@@ -3,7 +3,11 @@
 
 # config
 app/config.ini
+app/config copy.ini
 
 # images
 !/assets/images
 /assets/images/*
+
+#BDD
+app/dump.sql

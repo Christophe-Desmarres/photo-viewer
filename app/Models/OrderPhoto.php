@@ -53,7 +53,11 @@ class OrderPhoto extends CoreModel
     {
         // requete de recherche si photo existante ds la commande
         $sqlSearch = "
-                SELECT * FROM `order_photo` WHERE `id_order` = :id_order AND `folder` = :folder AND `name` =:name
+                SELECT * FROM `order_photo` 
+                WHERE `id_order` = :id_order 
+                AND `folder` = :folder 
+                AND `name` =:name
+                ORDER BY `folder`
                 ";
         $db = Database::getPDO();
         $stmtSearch = $db->prepare($sqlSearch);
@@ -62,7 +66,6 @@ class OrderPhoto extends CoreModel
         $stmtSearch->bindValue(":name", $name, PDO::PARAM_STR);
         $stmtSearch->execute();
         $result = $stmtSearch->fetchAll(PDO::FETCH_CLASS);
-        // dd($result);
         //ferme la connexion
         $db = null;
         return $result !== [] ? $result : false;
@@ -74,6 +77,7 @@ class OrderPhoto extends CoreModel
         $sql = "
         SELECT * from order_photo 
         WHERE id_order = :id_order
+        ORDER BY `folder`
         ";
         $stmt = $db->prepare($sql);
         $stmt->bindValue(":id_order", $id_order, PDO::PARAM_STR);
@@ -137,7 +141,6 @@ class OrderPhoto extends CoreModel
         $stmtUpdate->bindValue(":nblarge", $this->nblarge, PDO::PARAM_INT);
         $stmtUpdate->execute();
         $result = $stmtUpdate->fetchAll(PDO::FETCH_CLASS);
-        // dd($result);
 
         //ferme la connexion
         $db = null;
@@ -147,7 +150,10 @@ class OrderPhoto extends CoreModel
     public static function delete($id)
     {
         $db = Database::getPDO();
-        $sql = "DELETE FROM `order_photo` WHERE id = $id";
+        $sql = "
+        DELETE FROM `order_photo` 
+        WHERE id = $id
+        ";
         $stmt = $db->prepare($sql);
         $stmt->execute();
     }

@@ -1,8 +1,7 @@
-<?php
+<?php         
 d($_POST);
-d($liste);
-?>
-
+d($_SESSION);
+ ?>
 <div class='container'>
 
     <h1>Récapitulatif de la commande</h1>
@@ -38,22 +37,6 @@ d($liste);
             $price_large = 0;
             foreach ($liste as $index => $image) {
                 if ($image !== 'ordertoprint') {
-                    // d($image);
-                    // d($size);
-                    // selectionne uniquement le nom de l'image
-                    //$name = explode("/", $image)[1];
-                    // remplace le _jpg par .jpg du au changement de nom automatique lors du passage en tableau indexé du nom avec light ou large
-                    //$name = preg_replace('/_jpg/', '.jpg', $name);
-
-                    // if ($folder != preg_replace('/_/', ' ', explode("/", $image)[0])) {
-                    //     // même principe avec le nom du dossier qu'avec le nom du fichier
-                    //     $folder = explode("/", $image)[0];
-                    //     // les espaces du nom de dossiers sont remplacés automatiquement par des '_' donc on remets des espaces
-                    //     $folder = preg_replace('/_/', ' ', $folder);
-
-                    //     echo "<h1 class='titre'>Album $folder</h1>";
-                    // }
-
                     $price_light += $image->nblight;
                     $price_large += $image->nblarge;
             ?>
@@ -63,10 +46,10 @@ d($liste);
                         <td><?= $image->folder ?></td>
                         <td><?= $image->name ?></td>
                         <td class="nblight">
-                            <input class="nb" style="color:<?= $image->nblight == 0 ? "red" : "" ?>;" name="nblight/<?= $image->name ?>" value="<?= $image->nblight ?>">
+                            <input class="nb" style="background-color:<?= $image->nblight == 0 && $image->nblarge == 0 ? "red" : "" ?>; color:<?= $image->nblight == 0 && $image->nblarge == 0 ? "white" : ($image->nblight == 0 ? "red" : "") ?>;" name="nblight/<?= $image->folder . "/" . $image->name ?>" value="<?= $image->nblight ?>">
                         </td>
                         <td class="nblarge">
-                            <input class="nb" style="color:<?= $image->nblarge == 0 ? "red" : "" ?>;" name="nblarge/<?= $image->name ?>" value="<?= $image->nblarge ?>">
+                            <input class="nb" style="background-color:<?= $image->nblight == 0 && $image->nblarge == 0 ? "red" : "" ?>; color:<?= $image->nblight == 0 && $image->nblarge == 0 ? "white" : ($image->nblarge == 0 ? "red" : "") ?>;" name="nblarge/<?= $image->folder . "/" . $image->name ?>" value="<?= $image->nblarge ?>">
                         </td>
                     </tr>
 

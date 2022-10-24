@@ -4,12 +4,14 @@ namespace App\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderPhoto;
+use App\Models\User;
 
 class MainController extends CoreController
 {
 
     /**
      * Méthode s'occupant de la page d'accueil
+     * affiche la liste des dossiers
      *
      * @return void
      */
@@ -34,7 +36,7 @@ class MainController extends CoreController
     }
 
     /**
-     * Méthode s'occupant de la page d'accueil
+     * Méthode s'occupant de la page de connexion
      *
      * @return void
      */
@@ -45,7 +47,7 @@ class MainController extends CoreController
     }
 
     /**
-     * Méthode s'occupant de la page des dossiers
+     * Méthode s'occupant d'afficher la liste des photos du dossier selectionné
      *
      * @return void
      */
@@ -93,28 +95,27 @@ class MainController extends CoreController
     }
 
     /**
-     * Méthode s'occupant de la page d'affichage des photos du dossier
+     * Méthode s'occupant d'afficher la page du panier
      *
      * @return void
      */
     public function cart()
     {
 
-
         $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order']), 'customer' => $_SESSION['customer']]);
     }
 
     /**
-     * Méthode s'occupant de la page por choisir le nb d'impression
-     *
+     * Méthode s'occupant d'enregistrer la liste des photos, de créer un numéro de commande et de créer un utilisateur
+     * 
      * @return void
      */
     public function order()
     {
-
         // création d'un numéro de commande si non existant ds variable session 'id_order'
         Order::create();
 
+        // si c'est une nouvelle liste pour cette session ou si la liste est différente de la sélection (ajout de photo d'un autre dossier par exemple)
         if (!isset($_SESSION['OrderPhoto']) || $_SESSION['OrderPhoto'] !== $_POST['selected']) {
             // entrée des photos choisi par l'utilisateur ds la bdd en lien avec le numéro de commande
             foreach ($_POST['selected'] as $index => $path) {
@@ -123,12 +124,15 @@ class MainController extends CoreController
                 $name = explode("/", $path)[1];
                 // j'instancie la classe OrderPhoto pour créer un objet photo relié à un id_order
                 $photo = new OrderPhoto($_SESSION['id_order'], $folder, $name);
-                // j'ajout l'objet dans la bdd
+                // j'ajoute l'objet dans la bdd
                 $photo->insert();
             }
         }
+
+
+
         // je créé la variable de session 'OrderPhotoListName' qui contient la iste des photos selectionnées pour cette commande
-        OrderPhoto::findAllName($_SESSION['id_order']);
+        // OrderPhoto::findAllName($_SESSION['id_order']);
 
         $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order']), 'customer' => $_SESSION['customer']]);
     }
@@ -141,7 +145,6 @@ class MainController extends CoreController
      */
     public function delete($id)
     {
-        echo "suppression photo n°$id";
         OrderPhoto::delete($id);
         // je créé la variable de session 'OrderPhotoListName' qui contient la iste des photos selectionnées pour cette commande
         OrderPhoto::findAllName($_SESSION['id_order']);
@@ -158,24 +161,34 @@ class MainController extends CoreController
     public function send()
     {
 
-        // TODO
-        // ajout order avec customer et id_order
+        $_SESSION['customer'] = [];
+        // pour eviter d'avoir des erreur lors de l'affichage d ela page  cart
+        // je vérifie la présence de la validation du formulaire et si les info sont différentes
+        if (isset($_POST['customer']) && $_SESSION['customer'] !== $_POST['customer']) {
+            // j'instancie la classe user pour créer un utilisateur
+            $user = new User($_POST['customer']['pseudo'], $_POST['customer']['firstname'], $_POST['customer']['lastname'], $_POST['customer']['email']);
+            // j'ajoute l'objet dans la bdd
+            $user_id = $user->insert();
+            //dd($user_id[0]->id);
+            $order = new Order($_SESSION['id_order'], $user_id[0]->id);
+            $order->insert();
+        }
 
-        // mise à jour des quantités
+
+
+        // mise à jour des quantités et des photos séléctionnées
         foreach ($_POST['selected'] as $path => $size) {
             $folder = explode("/", $path)[0];
             $name = explode("/", $path)[1];
             $photoObject = new OrderPhoto($_SESSION['id_order'], $folder, $name);
             $photoObject->setNblight($size['light']);
             $photoObject->setNblarge($size['large']);
+
+            // je complete les infos
             $photoObject->update($size['id']);
 
             // je recherche si la photo existe
-            // je complete les infos
-            // j'ajoute la photo ds la commande
-
         }
-
 
         $_SESSION['customer'] = $_POST['customer'];
 
@@ -192,6 +205,15 @@ class MainController extends CoreController
     {
 
 
+        if (isset($_POST['other_order'])) {
+            header("Location: http://localhost:8080/");
+            echo "hello toto !!";
+            exit;
+        } else {
+            echo "merci " . $_SESSION['customer']['pseudo'] . " de votre commande num : " . substr(explode('-', $_SESSION['id_order'])[2], 0, 4);
+            exit;
+        }
+
 
         // TODO
         // je créer un customer ds table customer
@@ -206,27 +228,41 @@ class MainController extends CoreController
 
 
         d($_POST);
+        d($_SESSION);
         // je créé l'architecture dossier pour récupérer les images commandées
-        mkdir("./assets/commandes/commande_" . $_SESSION['id_order'], 0700);
-        mkdir("./assets/commandes/commande_" . $_SESSION['id_order'], 0700);
-        mkdir("./assets/commandes/commande_" . $_SESSION['id_order'], 0700);
+        if (!file_exists("./assets/commandes/commande_" . $_SESSION['id_order'])) {
+            mkdir("./assets/commandes/commande_" . $_SESSION['id_order'], 0700);
+            mkdir("./assets/commandes/commande_" . $_SESSION['id_order'] . "/10x15", 0700);
+            mkdir("./assets/commandes/commande_" . $_SESSION['id_order'] . "/15x20", 0700);
+        } else {
+            echo "ce dossier existe déjà !!!";
+        }
+
+        $path_fichier = "./assets/commandes/commande_" . $_SESSION['id_order'] . "/" . $_SESSION['customer']['pseudo'] . ".txt";
+        $texte = "commande de " . $_SESSION['customer']['pseudo'];
+        file_put_contents($path_fichier, $texte);
 
         foreach ($_POST as $image => $number) {
             // enleve le traitement de la première valeur récupérée du formulaire
             if ($image != "print") {
-                // selectionne uniquement le nom de l'image
+                // selectionne uniquement la taille de l'image (nblight ou nblarge)
                 $size = explode("/", $image)[0];
-                // d($size);
                 $folder = explode("/", $image)[1];
-                // d($folder);
                 $name = explode("/", $image)[2];
-                // d($name);
 
                 // remplace le _jpg par .jpg du au changement de nom automatique lors du passage en tableau indexé du nom avec light ou large
                 $name = preg_replace('/_jpg/', '.jpg', $name);
                 // les espaces du nom de dossiers sont remplacés automatiquement par des '_' donc on remets des espaces
                 $folder = preg_replace('/_/', ' ', $folder);
-                // d($number);
+
+                // si le nombre d'impression est >0 on ajoute dans le fichier texte de résumé de commande
+                if ($number != 0) {
+                    //On récupère le contenu du fichier
+                    $texte = file_get_contents($path_fichier);
+                    //On ajoute notre nouveau texte à l'ancien
+                    $texte .= "\n$folder=>$name x $number $size";
+                    file_put_contents($path_fichier, $texte);
+                }
 
                 // boucle pour copier les images ds un dossier
                 for ($i = 0; $i < $number; $i++) {
@@ -234,15 +270,15 @@ class MainController extends CoreController
                     $new_name = explode(".$extension", $name)[0] . "($i).$extension";
 
                     if ($size == "nblight") {
-                        copy("./assets/images/$folder/$name", "./assets/commandes/commande_07 gérard mensoif/10x15/$new_name");
+                        copy("./assets/images/$folder/$name", "./assets/commandes/commande_" . $_SESSION['id_order'] . "/10x15/$new_name");
                     } else {
-                        copy("./assets/images/$folder/$name", "./assets/commandes/commande_07 gérard mensoif/15x20/$new_name");
+                        copy("./assets/images/$folder/$name", "./assets/commandes/commande_" . $_SESSION['id_order'] . "/15x20/$new_name");
                     }
-                    echo "<br> j'imprime le fichier $folder/$name au format " . ($size == "nblight" ? "10x15" : "15x20");
+                    // echo "<br> j'imprime le fichier $folder/$name au format " . ($size == "nblight" ? "10x15" : "15x20");
                 }
             }
         }
-        echo "<br> <br>yes, we did it !!!";
+        echo "<br> <br>Commande de XXXXX traitée";
         // $this->show('cart_resume');
     }
 

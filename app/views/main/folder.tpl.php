@@ -1,3 +1,7 @@
+<?php         
+d($_POST);
+d($_SESSION);
+ ?>
 <div class='container'>
 
     <h1 class="titre">Album <?= $folder ?></h1>

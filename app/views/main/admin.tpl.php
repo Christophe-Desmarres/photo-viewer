@@ -1,4 +1,7 @@
 <?php
+d($_POST);
+d($_SESSION);
+
 $nom_dossier = "./assets/images/";
 
 // open the directory choose

@@ -15,11 +15,14 @@ class Order extends CoreModel
     // Les propriétés représentent les champs
     // Attention il faut que les propriétés aient le même nom (précisément) que les colonnes de la table
 
+    public $id_order;
+    public $id_customer;
 
 
-
-    public function __construct()
+    public function __construct($id_order, $id_customer)
     {
+        $this->id_order = $id_order;
+        $this->id_customer = $id_customer;
     }
 
 
@@ -35,13 +38,16 @@ class Order extends CoreModel
         // Récupération des données du fichier de config
         // la fonction parse_ini_file parse le fichier et retourne un array associatif
         $configData = parse_ini_file(__DIR__ . '/../config.ini');
-        
+
         // création d'un numéro de commande si non existant
         if (!isset($_SESSION['id_order']) || $_SESSION['id_order'] == null) {
             // format aaaammjj-hhmmss
             // 20221020-215107
-            $_SESSION['id_order'] = $configData['MACHINE_NAME'] . "-" . date("Ymd-Gis");
+            $order_number = $configData['MACHINE_NAME'] . "-" . date("Ymd-Gis");
+            $_SESSION['id_order'] = $order_number;
         }
+        // return order number
+        return $_SESSION['id_order'];
     }
 
 
@@ -49,13 +55,19 @@ class Order extends CoreModel
     {
         $db = Database::getPDO();
         $sql = "
-        INSERT INTO `photo` (`path`) VALUES (:path)
+        INSERT INTO `order_customer` (`id_order`, `id_customer`) 
+        VALUES (:id_order, :id_customer)
         ";
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(":path", $this->path, PDO::PARAM_STR);
+        $stmt->bindValue(":id_order", $this->id_order, PDO::PARAM_STR);
+        $stmt->bindValue(":id_customer", $this->id_customer, PDO::PARAM_INT);
         $stmt->execute();
         // retourne l'id du dernier élément inséréde cette connexion db
-        return $db->lastInsertId();
+        $result = $stmt->fetchAll(PDO::FETCH_CLASS);
+        //ferme la connexion
+        $db = null;
+
+        return $result !== [] ? $result : false;
     }
 
     public function update()
