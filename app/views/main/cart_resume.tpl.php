@@ -1,7 +1,3 @@
-<?php
-d($_POST);
-d($_SESSION);
-?>
 <div class='container'>
 
     <h1>Récapitulatif de la commande</h1>

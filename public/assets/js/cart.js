@@ -82,7 +82,6 @@ if (document.title == "cart | Image Viewer") {
         let light = document.querySelectorAll('td.nblight input.nb');
 
         light.forEach(nblight => {
-            console.log(nblight);
             nblight.dataset.nblight++;
             nblight.value++;
         });
@@ -93,7 +92,6 @@ if (document.title == "cart | Image Viewer") {
         let large = document.querySelectorAll('td.nblarge input.nb');
 
         large.forEach(nblarge => {
-            console.log(nblarge);
             nblarge.dataset.nblarge++;
             nblarge.value++;
         });

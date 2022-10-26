@@ -1,10 +1,6 @@
-<?php         
-d($_POST);
-d($_SESSION);
- ?>
  <div class='container'>
 
-    <h1>panier</h1>
+    <h1>Panier</h1>
     <form class="cart__preview" action="/cart_send" method="post" autocomplete="off">
         <p>Commande n° <?= $_SESSION['id_order'] ?></p>
 

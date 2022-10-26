@@ -1,9 +1,8 @@
-<?php         
-d($_POST);
+<?php
 d($_SESSION);
-//d($_SESSION=[]);
- ?>
- <div class='container'>
+//d($_SESSION = []);
+?>
+<div class='container'>
 
     <h1>Listes de dossiers</h1>
 

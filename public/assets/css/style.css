@@ -38,18 +38,19 @@ a {
     height: 6rem;
 }
 
-.header--title {
-    font-size: 6rem;
-    display: inline;
-    color: white;
-}
 
 h1 {
-    font-size: 2rem;
     display: block;
     width: 100%;
     font-weight: bold;
     padding: 1rem;
+    font-size: 4rem;
+}
+
+.header--title {
+    font-size: 6rem;
+    display: inline;
+    color: white;
 }
 
 .description {
@@ -57,25 +58,47 @@ h1 {
     padding: 1rem;
 }
 
-.alert {
+/* gestion des messages */
+#message {
     padding: 1rem;
     width: 100%;
+    font-size: 2rem;
+    text-align: center;
+    animation: appear linear 5s;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.alert {
     background-color: red;
     color: white;
-    font-size: 1.2rem;
 }
 
 .info {
-    padding: 1rem;
-    width: 100%;
     background-color: lightskyblue;
     color: black;
-    font-size: 1.2rem;
 }
 
 .hidden {
     display: none;
 }
+
+/*----------------------------*/
 
 main {
     flex-grow: 1;

@@ -17,6 +17,7 @@ class Order extends CoreModel
 
     public $id_order;
     public $id_customer;
+    public $status;
 
 
     public function __construct($id_order, $id_customer)
@@ -30,9 +31,41 @@ class Order extends CoreModel
     {
     }
 
-    public function findAll()
+    public static function findAll()
     {
+        // recherche toutes les commandes
+        $sqlSearch = "
+         SELECT * FROM `order_customer` 
+         INNER JOIN customer 
+         ON order_customer.id_customer = customer.id
+         ";
+
+
+
+        $db = Database::getPDO();
+        $stmtSearch = $db->prepare($sqlSearch);
+        $stmtSearch->execute();
+        $result = $stmtSearch->fetchAll(PDO::FETCH_ASSOC);
+        //ferme la connexion
+        $db = null;
+
+
+
+
+        // dd($result);
+
+
+
+
+
+
+        
+        return $result !== [] ? $result : false;
     }
+
+
+
+
     public static function create()
     {
         // Récupération des données du fichier de config

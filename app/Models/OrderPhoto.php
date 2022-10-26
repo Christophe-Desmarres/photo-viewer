@@ -32,11 +32,36 @@ class OrderPhoto extends CoreModel
     }
 
 
+    public static function findFolder()
+    {
+        $nom_dossier = "./assets/images/";
+        // open the directory choose
+        $dossierCourant = opendir($nom_dossier);
+        $dossiers = [];
+
+        // boucle pour parcourir tous les éléments du dossier $nom_dossier 
+        while ($dossier = readdir($dossierCourant)) {
+            // condition pour ne pas prendre le . (dossier en cours) et .. (dosier parent) et garder les dossier uniquement (sans extension)
+            if ($dossier != "." && $dossier != ".." && strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "") {
+                $dossiers[] = $dossier;
+            }
+        }
+        closedir($dossierCourant);
+
+        return $dossiers;
+    }
+
+
+
+
+
+    // search photo according to id
     public static function findById($id)
     {
         // requete de recherche si photo existante ds la commande
         $sqlSearch = "
-                SELECT * FROM `order_photo` WHERE `id` = :id
+                SELECT * FROM `order_photo` 
+                WHERE `id` = :id
                 ";
         $db = Database::getPDO();
         $stmtSearch = $db->prepare($sqlSearch);
@@ -49,6 +74,7 @@ class OrderPhoto extends CoreModel
         return $result !== [] ? $result : false;
     }
 
+    // find all selected photo to order
     public static function find($id_order, $folder, $name)
     {
         // requete de recherche si photo existante ds la commande
@@ -71,6 +97,8 @@ class OrderPhoto extends CoreModel
         return $result !== [] ? $result : false;
     }
 
+
+    // find all object photo in order with this id
     public static function findAll($id_order)
     {
         $db = Database::getPDO();
@@ -83,7 +111,6 @@ class OrderPhoto extends CoreModel
         $stmt->bindValue(":id_order", $id_order, PDO::PARAM_STR);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-
 
         // je mets à jour la variable de session avec la liste des photos selectionnées sous forme d'objet OrdePhoto
         $_SESSION['OrderPhoto'] = $result;
@@ -100,7 +127,7 @@ class OrderPhoto extends CoreModel
     // création variable de session contenant la liste des photos selectionnées sous forme de tableau indexé folder/name
     public static function findAllName()
     {
-        $tablist[]="";
+        $tablist[] = "";
         // je récupere la liste des noms des photos de la commande en cours
         //$_SESSION['OrderPhoto'] = OrderPhoto::findAll($id_order);
         foreach ($_SESSION['OrderPhoto'] as $index => $photo) {

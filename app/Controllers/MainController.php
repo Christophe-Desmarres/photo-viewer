@@ -18,21 +18,21 @@ class MainController extends CoreController
     public function home()
     {
 
-        $nom_dossier = "./assets/images/";
-        // open the directory choose
-        $dossierCourant = opendir($nom_dossier);
-        $dossiers = [];
+        // $nom_dossier = "./assets/images/";
+        // // open the directory choose
+        // $dossierCourant = opendir($nom_dossier);
+        // $dossiers = [];
 
-        // boucle pour parcourir tous les éléments du dossier $nom_dossier 
-        while ($dossier = readdir($dossierCourant)) {
-            // condition pour ne pas prendre le . (dossier en cours) et .. (dosier parent) et garder les dossier uniquement (sans extension)
-            if ($dossier != "." && $dossier != ".." && strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "") {
-                $dossiers[] = $dossier;
-            }
-        }
-        closedir($dossierCourant);
+        // // boucle pour parcourir tous les éléments du dossier $nom_dossier 
+        // while ($dossier = readdir($dossierCourant)) {
+        //     // condition pour ne pas prendre le . (dossier en cours) et .. (dosier parent) et garder les dossier uniquement (sans extension)
+        //     if ($dossier != "." && $dossier != ".." && strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "") {
+        //         $dossiers[] = $dossier;
+        //     }
+        // }
+        // closedir($dossierCourant);
 
-        $this->show('home', ['dossiers' => $dossiers]);
+        $this->show('home', ['dossiers' => OrderPhoto::findFolder()]);
     }
 
     /**
@@ -229,20 +229,20 @@ class MainController extends CoreController
     public function print()
     {
 
+        $message = ["", ""];
+
         if (isset($_POST['print'])) {
             // sinon c'est fini et j'affiche un gentil message de remerciement avec le numéro de commande
-            echo "merci " . $_SESSION['customer']['pseudo'] . " de votre commande num : " . substr(explode('-', $_SESSION['id_order'])[2], 0, 4);
+            $message = ["info", "merci " . $_SESSION['customer']['pseudo'] . " de votre commande num : <strong>" . substr(explode('-', $_SESSION['id_order'])[2], 0, 4) . "</strong>"];
             // et je réinitialise les variables de session
             $_SESSION = [];
-            $this->show('admin', ['message' => ["info","Commande de XXXXX traitée"]]);
         }
-        
+
+        $this->show('home', ['dossiers' => OrderPhoto::findFolder(), 'message' => $message]);
 
         // redirige vers la page d'accueil
-        header("Location: http://photoviewer/");
-        exit;
-
-
+        // header("Location: http://photoviewer/");
+        // exit;
     }
 
 
@@ -251,7 +251,7 @@ class MainController extends CoreController
      *
      * @return void
      */
-    public function recupOrder()
+    public function recupOrder($order_id)
     {
         d($_POST);
         d($_SESSION);
@@ -322,7 +322,10 @@ class MainController extends CoreController
         // utiliser un tri si possible
         // ajouter un bouton pour récupérer la commande avec recupOrder($user_id)
 
-        $this->show('admin');
+
+
+
+        $this->show('admin', ['liste'=>Order::findAll()]);
     }
 
 
