@@ -1,7 +1,7 @@
-<?php         
+<?php
 d($_POST);
 d($_SESSION);
- ?>
+?>
 <div class='container'>
 
     <h1>Récapitulatif de la commande</h1>
@@ -15,10 +15,8 @@ d($_SESSION);
             <button class="button__ordervalidate" type="submit" name="other_order">Commander d'autres photos</button>
         </div>
         <div>reference client :
-            <p>Pseudo : <?= $customer['pseudo'] ?></p>
+            <p><?= $customer['firstname'] ?> <?= $customer['lastname'] ?> dit <?= $customer['pseudo'] ?></p>
             <p>Email : <?= $customer['email'] ?></p>
-            <p>Prénom : <?= $customer['firstname'] ?></p>
-            <p>Nom : <?= $customer['lastname'] ?></p>
         </div>
 
 

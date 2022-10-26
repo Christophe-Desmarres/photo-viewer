@@ -53,13 +53,13 @@ class User extends CoreModel
     public function insert()
     {
         $db = Database::getPDO();
-
+        
         // requete d'insertion de l'utilisateur'
         $sqlInsert = "
         INSERT INTO `customer` (`user_name`, `firstname`, `lastname`, `email`) 
         VALUES (:user_name, :firstname, :lastname, :email)
         ";
-
+        
         $exist = User::find($this->pseudo);
         // si le pseudo n'existe pas, je l'ajoute
         if (!$exist) {
@@ -73,10 +73,10 @@ class User extends CoreModel
             // return $db->lastInsertId();
             $result = $stmtInsert->fetchAll(PDO::FETCH_CLASS);
             //ferme la connexion
+            $result=$db->lastInsertId();
             $db = null;
-
-            dd($result);
-            return $result !== [] ? $result : false;
+            
+            return $result;
         } else {
             return $exist;
         }

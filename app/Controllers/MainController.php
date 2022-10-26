@@ -102,7 +102,31 @@ class MainController extends CoreController
     public function cart()
     {
 
-        $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order']), 'customer' => $_SESSION['customer']]);
+        // si l'utilisateur va sur le panier avant d'avoir selectionné des photos, pour éviter les défauts
+        if (isset($_SESSION['id_order'])) {
+            if ($_SESSION['id_order'] != "") {
+                OrderPhoto::findAll($_SESSION['id_order']);
+                $message = ["", ""];
+            } else {
+                $message = ["alert", "Panier vide"];
+            }
+        } else {
+            $_SESSION['id_order'] = "";
+            $_SESSION['OrderPhoto'] = [];
+            $_SESSION['OrderPhotoListName'] = [];
+            $message = ["alert", "Panier vide"];
+        }
+
+
+        if (!isset($_SESSION['customer'])) {
+            $_SESSION['customer']['pseudo'] = "";
+            $_SESSION['customer']['lastname'] = "";
+            $_SESSION['customer']['firstname'] = "";
+            $_SESSION['customer']['email'] = "";
+        }
+
+
+        $this->show('cart', ['liste' => $_SESSION['OrderPhoto'], 'customer' => $_SESSION['customer'], 'message' => $message]);
     }
 
     /**
@@ -115,20 +139,25 @@ class MainController extends CoreController
         // création d'un numéro de commande si non existant ds variable session 'id_order'
         Order::create();
 
-        // si c'est une nouvelle liste pour cette session ou si la liste est différente de la sélection (ajout de photo d'un autre dossier par exemple)
-        if (!isset($_SESSION['OrderPhoto']) || $_SESSION['OrderPhoto'] !== $_POST['selected']) {
-            // entrée des photos choisi par l'utilisateur ds la bdd en lien avec le numéro de commande
-            foreach ($_POST['selected'] as $index => $path) {
-                // je récupere le dossier et le nom du fichier
-                $folder = explode("/", $path)[0];
-                $name = explode("/", $path)[1];
-                // j'instancie la classe OrderPhoto pour créer un objet photo relié à un id_order
-                $photo = new OrderPhoto($_SESSION['id_order'], $folder, $name);
-                // j'ajoute l'objet dans la bdd
-                $photo->insert();
+        if (isset($_POST['selected'])) {
+            // si c'est une nouvelle liste pour cette session ou si la liste est différente de la sélection (ajout de photo d'un autre dossier par exemple)
+            if (!isset($_SESSION['OrderPhoto']) || $_SESSION['OrderPhoto'] !== $_POST['selected']) {
+                // entrée des photos choisi par l'utilisateur ds la bdd en lien avec le numéro de commande
+                foreach ($_POST['selected'] as $index => $path) {
+                    // je récupere le dossier et le nom du fichier
+                    $folder = explode("/", $path)[0];
+                    $name = explode("/", $path)[1];
+                    // j'instancie la classe OrderPhoto pour créer un objet photo relié à un id_order
+                    $photo = new OrderPhoto($_SESSION['id_order'], $folder, $name);
+                    // j'ajoute l'objet dans la bdd
+                    $photo->insert();
+                }
             }
         }
 
+        if (!isset($_SESSION['customer'])) {
+            $_SESSION['customer'] = [];
+        }
 
 
         // je créé la variable de session 'OrderPhotoListName' qui contient la iste des photos selectionnées pour cette commande
@@ -146,8 +175,7 @@ class MainController extends CoreController
     public function delete($id)
     {
         OrderPhoto::delete($id);
-        // je créé la variable de session 'OrderPhotoListName' qui contient la iste des photos selectionnées pour cette commande
-        OrderPhoto::findAllName($_SESSION['id_order']);
+
         $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order']), 'customer' => $_SESSION['customer']]);
     }
 
@@ -161,20 +189,19 @@ class MainController extends CoreController
     public function send()
     {
 
-        $_SESSION['customer'] = [];
-        // pour eviter d'avoir des erreur lors de l'affichage d ela page  cart
-        // je vérifie la présence de la validation du formulaire et si les info sont différentes
+        // pour eviter d'avoir des erreur lors de l'affichage de la page  cart
+        // je vérifie la présence de la validation du formulaire et si les info de l'utilisateur sont différentes
         if (isset($_POST['customer']) && $_SESSION['customer'] !== $_POST['customer']) {
             // j'instancie la classe user pour créer un utilisateur
+            // TODO
+            // nettoyer les donnée du $_POST
             $user = new User($_POST['customer']['pseudo'], $_POST['customer']['firstname'], $_POST['customer']['lastname'], $_POST['customer']['email']);
             // j'ajoute l'objet dans la bdd
             $user_id = $user->insert();
-            //dd($user_id[0]->id);
-            $order = new Order($_SESSION['id_order'], $user_id[0]->id);
+            // j'ajoute ds la bdd le lien entre le user et le numéro de commande
+            $order = new Order($_SESSION['id_order'], $user_id);
             $order->insert();
         }
-
-
 
         // mise à jour des quantités et des photos séléctionnées
         foreach ($_POST['selected'] as $path => $size) {
@@ -184,10 +211,8 @@ class MainController extends CoreController
             $photoObject->setNblight($size['light']);
             $photoObject->setNblarge($size['large']);
 
-            // je complete les infos
+            // je complete les infos de quantités
             $photoObject->update($size['id']);
-
-            // je recherche si la photo existe
         }
 
         $_SESSION['customer'] = $_POST['customer'];
@@ -204,29 +229,30 @@ class MainController extends CoreController
     public function print()
     {
 
-
-        if (isset($_POST['other_order'])) {
-            header("Location: http://localhost:8080/");
-            echo "hello toto !!";
-            exit;
-        } else {
+        if (isset($_POST['print'])) {
+            // sinon c'est fini et j'affiche un gentil message de remerciement avec le numéro de commande
             echo "merci " . $_SESSION['customer']['pseudo'] . " de votre commande num : " . substr(explode('-', $_SESSION['id_order'])[2], 0, 4);
-            exit;
+            // et je réinitialise les variables de session
+            $_SESSION = [];
+            $this->show('admin', ['message' => ["info","Commande de XXXXX traitée"]]);
         }
+        
+
+        // redirige vers la page d'accueil
+        header("Location: http://photoviewer/");
+        exit;
 
 
-        // TODO
-        // je créer un customer ds table customer
-        // je créer un order relié au customer ds table order_customer
-        // j'ajoute les données des photos ds table photo
-        // j'ajoute les photos au order photo ds table order_photo
-
-        // je regarde si l'utilisateur veux valider sa commande ou commander d'autres photos
-        // si validation => "merci aurevoir, aller au gichet suivant pour regler et récuperer la commande"
-        // je vide les variables session liste et session customer
+    }
 
 
-
+    /**
+     * Méthode s'occupant de la page du panier
+     *
+     * @return void
+     */
+    public function recupOrder()
+    {
         d($_POST);
         d($_SESSION);
         // je créé l'architecture dossier pour récupérer les images commandées
@@ -278,10 +304,10 @@ class MainController extends CoreController
                 }
             }
         }
-        echo "<br> <br>Commande de XXXXX traitée";
+        // echo "<br> <br>Commande de XXXXX traitée";
         // $this->show('cart_resume');
+        $this->show('admin', ['message' => "<br> <br>Commande de XXXXX traitée"]);
     }
-
 
     /**
      * Méthode s'occupant de la page du panier
@@ -290,8 +316,16 @@ class MainController extends CoreController
      */
     public function admin()
     {
+
+        // TODO
+        // afficher la liste des commande par customer
+        // utiliser un tri si possible
+        // ajouter un bouton pour récupérer la commande avec recupOrder($user_id)
+
         $this->show('admin');
     }
+
+
     /**
      * Méthode s'occupant de la page du panier
      *

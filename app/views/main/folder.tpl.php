@@ -17,7 +17,7 @@ d($_SESSION);
                         <img class="image__list-img" src="<?= $router->generate('main-home') ?>assets/images/<?= $folder . "/" . $image ?>">
                         <img class="filigramme" src="<?= $router->generate('main-home') ?>assets/logo.png">
                         <figcaption class='image__list-name'><?= $image ?></figcaption>
-                        <input class="img__inputselect" type="checkbox" value="<?= $folder . "/" . $image ?>" name="selected[]" <?= in_array("$folder/$image",$_SESSION['OrderPhotoListName'])?"checked":"" ?>>
+                        <input class="img__inputselect" type="checkbox" value="<?= $folder . "/" . $image ?>" name="selected[]" <?= (isset($_SESSION['OrderPhotoListName']) && in_array("$folder/$image",$_SESSION['OrderPhotoListName']))?"checked":"" ?>>
                     </label>
                 </figure>
             <?php endforeach; ?>

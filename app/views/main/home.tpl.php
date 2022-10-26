@@ -1,6 +1,7 @@
 <?php         
 d($_POST);
 d($_SESSION);
+//d($_SESSION=[]);
  ?>
  <div class='container'>
 

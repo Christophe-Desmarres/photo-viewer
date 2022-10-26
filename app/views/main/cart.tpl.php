@@ -11,7 +11,7 @@ d($_SESSION);
         <div class="input__list">
             <input class="input__customer" placeholder="Nom" type="text" id="lastname" name="customer[lastname]" value="<?= $_SESSION['customer'] != null ? $customer['lastname'] : "" ?>" autocomplete="off" required>
             <input class="input__customer" placeholder="Prénom" type="text" id="firstname" name="customer[firstname]" value="<?= $_SESSION['customer'] != null ? $customer['firstname'] : "" ?>" autocomplete="off" required>
-            <input class="input__customer" placeholder="Pseudo" type="text" id="pseudo" name="customer[pseudo]" value="<?= $_SESSION['customer'] != null ? $customer['pseudo'] : "" ?>" autocomplete="off" required autofocus>
+            <input class="input__customer" placeholder="Pseudo" type="text" id="pseudo" name="customer[pseudo]" value="<?= $_SESSION['customer'] != null ? $customer['pseudo'] : "" ?>" autocomplete="off" required>
             <input class="input__customer" placeholder="email" type="email" id="email" name="customer[email]" value="<?= $_SESSION['customer'] != null ? $customer['email'] : "" ?>" autocomplete="off">
         </div>
         <div class="cart__preview--button">

@@ -83,16 +83,26 @@ class OrderPhoto extends CoreModel
         $stmt->bindValue(":id_order", $id_order, PDO::PARAM_STR);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+
+        // je mets à jour la variable de session avec la liste des photos selectionnées sous forme d'objet OrdePhoto
+        $_SESSION['OrderPhoto'] = $result;
+
+        // je créé la variable de session 'OrderPhotoListName' qui contient la iste des photos selectionnées pour cette commande sous format 'folder/name'
+        OrderPhoto::findAllName();
+
         //ferme la connexion
         $db = null;
         return $result;
     }
 
 
-    public static function findAllName($id_order)
+    // création variable de session contenant la liste des photos selectionnées sous forme de tableau indexé folder/name
+    public static function findAllName()
     {
+        $tablist[]="";
         // je récupere la liste des noms des photos de la commande en cours
-        $_SESSION['OrderPhoto'] = OrderPhoto::findAll($id_order);
+        //$_SESSION['OrderPhoto'] = OrderPhoto::findAll($id_order);
         foreach ($_SESSION['OrderPhoto'] as $index => $photo) {
             $path = "$photo->folder/$photo->name";
             $tablist[] = $path;
@@ -129,7 +139,7 @@ class OrderPhoto extends CoreModel
 
     public function update($id)
     {
-        $sqlUpdate="
+        $sqlUpdate = "
         UPDATE `order_photo`
         SET nblight = :nblight, nblarge= :nblarge
         WHERE id = :id
