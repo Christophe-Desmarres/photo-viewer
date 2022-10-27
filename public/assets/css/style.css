@@ -58,7 +58,11 @@ h1 {
     padding: 1rem;
 }
 
+
+/* ----------------------------------------- */
 /* gestion des messages */
+/* ----------------------------------------- */
+
 #message {
     padding: 1rem;
     width: 100%;
@@ -75,6 +79,7 @@ h1 {
     25% {
         opacity: 1;
     }
+
     75% {
         opacity: 1;
     }
@@ -98,7 +103,11 @@ h1 {
     display: none;
 }
 
+
+
+/* ----------------------------------------- */
 /*----------------------------*/
+/* ----------------------------------------- */
 
 main {
     flex-grow: 1;
@@ -110,6 +119,11 @@ main {
     flex-wrap: wrap;
 
 }
+
+
+/* ----------------------------------------- */
+/* affichage des fichiers d'un dossier */
+/* ----------------------------------------- */
 
 #myFile {
     width: 100%;
@@ -321,6 +335,9 @@ main {
 }
 
 
+/* ----------------------------------------- */
+/* panier */
+/* ----------------------------------------- */
 
 
 .cart__preview {
@@ -378,8 +395,9 @@ main {
 
 
 
-
+/* ----------------------------------------- */
 /* list in cart */
+/* ----------------------------------------- */
 
 .image__cartlist-img {
     width: 150px;
@@ -473,7 +491,12 @@ input.nb {
     width: 30%;
 }
 
+
+
+/* ----------------------------------------- */
 /* affichage des fichiers pour le chargement */
+/* ----------------------------------------- */
+
 .upload__form img {
     height: 100px;
     order: 1;
@@ -507,6 +530,72 @@ input.nb {
     color: white;
 }
 
+
+
+/* ----------------------------------------- */
+/* espace connexion */
+/* ----------------------------------------- */
+
+.connexion {
+    display: flex;
+    height: 100%;
+}
+
+.connexion__left {
+    width: 50%;
+}
+
+.connexion__left h1{
+    text-align: center;
+}
+
+.connexion__left label {
+    width: 50%;
+    float: left;
+    text-align: right;
+    padding: 1rem;
+    font-size: 1.2rem;
+    margin: auto 0;
+
+}
+
+.connexion__left input {
+    width: 35%;
+    margin: 1rem 0;
+    padding: 1rem;
+}
+
+.connexion__left button {
+    width: 70%;
+    display: block;
+    margin: 1rem auto;
+    font-size: 1.2rem;
+    padding: 1rem;
+    background-color: rgb(34, 209, 209);
+    color: #222;
+    border: 2px solid #222;
+    border-radius: 5px;
+}
+
+.connexion__left button:hover {
+    background-color: #222;
+    color: rgb(34, 209, 209);
+    border: 2px solid rgb(34, 209, 209);
+    box-shadow: 0 0 20px rgb(34, 209, 209);
+}
+
+.connexion__right {
+    width: 50%;
+    background-image: url("../images/background.jpg");
+    background-position: center;
+    box-shadow: inset 2px 0px 20px black;
+}
+
+
+
+/* ---------- */
+/* css footer */
+/* ---------- */
 
 footer {
     background-color: gray;

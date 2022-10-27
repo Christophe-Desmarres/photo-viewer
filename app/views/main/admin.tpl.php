@@ -4,8 +4,6 @@ d($_SESSION);
 ?>
 
 
-
-
 <div class='container'>
 
     <h1>Espace Administration</h1>
@@ -35,8 +33,7 @@ d($_SESSION);
                         <td><?= $order['firstname'] . " " . $order['lastname'] ?></td>
                         <td><?= $order['email'] ?></td>
                         <td>
-                            <a href="/recupOrder/<?= $order->id ?>"><img class="image__cartlist-icon" src="<?= $router->generate('main-home') ?>assets/images/delete-icon-png-69.png"></a>
-                            <input type="hidden" name="selected[<?= $image->folder . "/" . $image->name ?>][id]" value="<?= $image->id ?>">
+                            <a href="/impression/<?= $order['id'] ?>"><img class="image__cartlist-icon" src="<?= $router->generate('main-home') ?>assets/images/printer.png"></a>
                         </td>
     </tr>
 

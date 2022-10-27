@@ -322,10 +322,11 @@ class MainController extends CoreController
         // utiliser un tri si possible
         // ajouter un bouton pour récupérer la commande avec recupOrder($user_id)
 
+        d($_POST);
 
+if(isset($_POST))
 
-
-        $this->show('admin', ['liste'=>Order::findAll()]);
+        $this->show('admin', ['liste' => Order::findAll()]);
     }
 
 

@@ -73,16 +73,6 @@ $router->addRoutes([
         ],
         'main-connexion'
     ],
-    // to register
-    [
-        'POST',
-        '/register',
-        [
-            'method' => 'register',
-            'controller' => '\App\Controllers\MainController'
-        ],
-        'main-register'
-    ],
     // to see every image at the selected folder to choose them
     [
         'GET',
@@ -145,7 +135,7 @@ $router->addRoutes([
     ],
     // to see administration page (with order)
     [
-        'GET',
+        'POST',
         '/administration',
         [
             'method' => 'admin',

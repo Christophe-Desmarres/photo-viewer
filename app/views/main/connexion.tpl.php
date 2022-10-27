@@ -1,41 +1,20 @@
-<?php
-$nom_dossier = "./assets/images/";
-?>
 
-<div class='container'>
-
-    <h1>Création d'utilisateur :</h1>
-    <form method="post" enctype="multipart/form-data" action="/action_page.php">
-        <div class="action">
-
+    <form class="connexion" method="post"  action="/administration">
+        
+        <div class="connexion__left">
+        <h1>Connexion admin</h1>
             <label for="pseudo">pseudo</label>
-            <input type="text" id="pseudo" name="pseudo">
+            <input type="text" id="pseudo" name="pseudo" autocomplete="off">
             <br>
-            <label for="lastname">lastname</label>
-            <input type="text" id="lastname" name="lastname">
-            <br>
-
-            <label for="firstname">firstname</label>
-            <input type="text" id="firstname" name="firstname">
-            <br>
-
-            <label for="email">email</label>
-            <input type="email" id="email" name="email">
-            <br>
-
+           
             <label for="password">password</label>
             <input type="password" id="password" name="password">
-            <br>
-            <label for="password_cfm">password confirm</label>
-            <input type="password" id="password_cfm" name="password_cfm">
-            <br>
 
-
+            <button>Connexion</button>
         </div>
-        <div>
-            <button>Submit</button>
+        <div class="connexion__right">
+
         </div>
     </form>
 
 
-</div>
