@@ -10,14 +10,12 @@
             <button class="button__ordervalidate" type="submit" name="print">Valider mes choix pour impression</button>
             <button class="button__ordervalidate" type="submit" name="other_order">Commander d'autres photos</button>
         </div>
-        <div>reference client :
-            <p><?= $customer['firstname'] ?> <?= $customer['lastname'] ?> dit <?= $customer['pseudo'] ?></p>
-            <p>Email : <?= $customer['email'] ?></p>
-        </div>
 
+        <p class="cart__preview--customer">Référence client : <?= $customer['firstname'] ?> <?= $customer['lastname'] ?> dit "<?= $customer['pseudo'] ?>"</p>
+        <p class="cart__preview--customer">Email : <?= $customer['email'] ?></p>
 
         <table>
-            <tr>
+            <tr class="row end">
                 <th>Image</th>
                 <th>Dossier</th>
                 <th>Nom</th>
@@ -51,25 +49,29 @@
 
                 }
             }; ?>
-            <tr class="row">
-                <td>TOTAL</td>
+            <tr class="row end">
+                <td>Quantité</td>
                 <td></td>
                 <td></td>
-                <td><?= $price_light ?></td>
+                <td> <?= $price_light ?></td>
                 <td><?= $price_large ?></td>
             </tr>
+            <tr class="row end">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><?= $price_light * 2 ?>€</td>
+                <td><?= $price_large * 3 ?>€</td>
+            </tr>
+            <tr class="row end">
+                <td>TOTAL</td>
+                <td></td>
+                <td><?= $price_light + $price_large?></td>
+                <td>impressions</td>
+                <td><?= $price_light * 2 + $price_large * 3 ?>€</td>
+            </tr>
         </table>
-        <table>
-
-
-        </table>
-
-        <p> <?= $price_light ?> photos au format 10x15cm : <?= $price_light * 2 ?>€</p>
-        <p><?= $price_large ?> photos au format 15x20cm : <?= $price_large * 3 ?>€</p>
-        <p>cout total : <?= $price_light * 2 + $price_large * 3 ?>€</p>
 
     </form>
-
-
 
 </div>

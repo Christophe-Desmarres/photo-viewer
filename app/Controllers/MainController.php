@@ -233,15 +233,15 @@ class MainController extends CoreController
 
         if (isset($_POST['print'])) {
             // sinon c'est fini et j'affiche un gentil message de remerciement avec le numéro de commande
-            $message = ["info", "merci " . $_SESSION['customer']['pseudo'] . " de votre commande num : <strong>" . substr(explode('-', $_SESSION['id_order'])[2], 0, 4) . "</strong>"];
+            $message = ["info", "Merci " . $_SESSION['customer']['pseudo'] . " de votre commande num : <strong>" . substr(explode('-', $_SESSION['id_order'])[2], 0, 4) . "</strong>"];
             // et je réinitialise les variables de session
             $_SESSION = [];
         }
 
+        header("Location: http://photoviewer/");
         $this->show('home', ['dossiers' => OrderPhoto::findFolder(), 'message' => $message]);
 
         // redirige vers la page d'accueil
-        // header("Location: http://photoviewer/");
         // exit;
     }
 
@@ -322,11 +322,27 @@ class MainController extends CoreController
         // utiliser un tri si possible
         // ajouter un bouton pour récupérer la commande avec recupOrder($user_id)
 
-        d($_POST);
+       // d($_POST);
 
-if(isset($_POST))
+        if (isset($_POST)) {
+            if ($_POST['pseudo'] == "Malika" || $_POST['pseudo'] == "Christophe") {
 
-        $this->show('admin', ['liste' => Order::findAll()]);
+                if ($_POST['password'] == "espaceAdmin") {
+                    $message = ["info", "Connexion réussie"];
+
+                    $this->show('admin', ['liste' => Order::findAll(),'message' => $message]);
+                    exit;
+                } else {
+                    $message = ["alert", "Votre login ou mot de passe est incorrect"];
+                }
+            } else {
+                $message = ["alert", "Votre login ou mot de passe est incorrect"];
+            }
+        } 
+
+        $this->show('connexion', ['message' => $message]);
+        //header("Location: http://photoviewer/connect");
+        exit;
     }
 
 

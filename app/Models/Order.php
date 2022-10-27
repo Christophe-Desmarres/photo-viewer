@@ -49,18 +49,9 @@ class Order extends CoreModel
         //ferme la connexion
         $db = null;
 
-
-
-
         // dd($result);
-
-
-
-
-
-
         
-        return $result !== [] ? $result : false;
+        return $result;
     }
 
 

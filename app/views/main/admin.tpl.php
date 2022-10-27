@@ -41,7 +41,7 @@ d($_SESSION);
                 };
             } else {
                 // sinon j'indique que le panier est vide
-                echo "<p>Pas de commande en cours</p>";
+                echo "<p class='empty'>Pas de commande en cours</p>";
             }
             ?>
             </table>

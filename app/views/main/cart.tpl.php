@@ -38,14 +38,14 @@
                         <td><?= $image->folder ?></td>
                         <td><?= $image->name ?></td>
                         <td class="nblight">
-                            <input class="nb" data-nblight="<?= $image->nblight ?>" name="selected[<?= $image->folder . "/" . $image->name ?>][light]" value="<?= $image->nblight ?>">
+                            <input class="nb" data-nblight="<?= $image->nblight ?>" style="background-color:<?= $image->nblight == 0 && $image->nblarge == 0 ? "red" : "" ?>; color:<?= $image->nblight == 0 && $image->nblarge == 0 ? "white" : ($image->nblight == 0 ? "red" : "") ?>;" name="selected[<?= $image->folder . "/" . $image->name ?>][light]" value="<?= $image->nblight ?>">
                             <div>
                                 <button class="plus light" type="button" name="plus">+</button>
                                 <button class="minus light" type="button" name="minus">-</button>
                             </div>
                         </td>
                         <td class="nblarge">
-                            <input class="nb" data-nblarge="<?= $image->nblarge ?>" name="selected[<?= $image->folder . "/" . $image->name ?>][large]" value="<?= $image->nblarge ?>">
+                            <input class="nb" data-nblarge="<?= $image->nblarge ?>" style="background-color:<?= $image->nblight == 0 && $image->nblarge == 0 ? "red" : "" ?>; color:<?= $image->nblight == 0 && $image->nblarge == 0 ? "white" : ($image->nblarge == 0 ? "red" : "") ?>;" name="selected[<?= $image->folder . "/" . $image->name ?>][large]" value="<?= $image->nblarge ?>">
                             <div>
                                 <button class="plus large" type="button" name="plus">+</button>
                                 <button class="minus large" type="button" name="minus">-</button>
@@ -62,7 +62,7 @@
                 };
             } else {
                 // sinon j'indique que le panier est vide
-                echo "<p>panier vide</p>";
+                echo "<p class='empty'>panier vide</p>";
             }
             ?>
             </table>
