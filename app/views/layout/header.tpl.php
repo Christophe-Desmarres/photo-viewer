@@ -15,8 +15,10 @@
 <body>
 
     <header>
-        <a href="/"><img class="logo" src="<?= $router->generate('main-home') ?>assets/logo.png"></a>
-        <h1 class="header--title">Image Viewer</h1>
+        <div class="banniere">
+            <a href="/"><img class="logo" src="<?= $router->generate('main-home') ?>assets/logo.png"></a>
+            <h1 class="header--title">CD Mar Photo</h1>
+        </div>
 
         <?php
 
