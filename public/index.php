@@ -143,6 +143,16 @@ $router->addRoutes([
         ],
         'main-admin'
     ],
+        // to see every image at the selected folder to choose them
+        [
+            'GET',
+            '/impression/[i:id]',
+            [
+                'method' => 'printOrder',
+                'controller' => '\App\Controllers\MainController'
+            ],
+            'main-printOrder'
+        ],
     // to upload files to print in folder
     [
         'POST',

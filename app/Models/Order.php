@@ -27,15 +27,34 @@ class Order extends CoreModel
     }
 
 
-    public function find($brandId)
+    public static function find($order_id)
     {
+           // recherche toutes les commandes
+           $sqlSearch = "
+           SELECT * FROM `order_customer` 
+           INNER JOIN customer 
+           ON order_customer.id_customer = customer.id
+           WHERE order_customer.id= $order_id
+           ";
+  
+    
+          $db = Database::getPDO();
+          $stmtSearch = $db->prepare($sqlSearch);
+          $stmtSearch->execute();
+          $result = $stmtSearch->fetchAll(PDO::FETCH_ASSOC);
+          //ferme la connexion
+          $db = null;
+  
+          // dd($result);
+          
+          return $result;
     }
 
     public static function findAll()
     {
         // recherche toutes les commandes
         $sqlSearch = "
-         SELECT * FROM `order_customer` 
+         SELECT *, order_customer.id AS id_request, customer.id AS customer_id FROM `order_customer` 
          INNER JOIN customer 
          ON order_customer.id_customer = customer.id
          ";
@@ -64,7 +83,7 @@ class Order extends CoreModel
         $configData = parse_ini_file(__DIR__ . '/../config.ini');
 
         // création d'un numéro de commande si non existant
-        if (!isset($_SESSION['id_order']) || $_SESSION['id_order'] == null) {
+        if (!isset($_SESSION['id_order']) || $_SESSION['id_order'] == "") {
             // format aaaammjj-hhmmss
             // 20221020-215107
             $order_number = $configData['MACHINE_NAME'] . "-" . date("Ymd-Gis");

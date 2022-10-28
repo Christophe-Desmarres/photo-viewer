@@ -1,6 +1,7 @@
 <?php
-d($_POST);
-d($_SESSION);
+// d($_POST);
+// d($_SESSION);
+// d($liste);
 ?>
 
 
@@ -26,14 +27,14 @@ d($_SESSION);
                 ?>
 
                     <tr class="row row<?= $index ?>">
-                        <td><?= $order['id'] ?></td>
+                        <td><?= $order['id_request'] ?></td>
                         <td><?= $order['id_order'] ?></td>
                         <td><?= $order['order_status']=='pending'?'en attente':'imprimée' ?></td>
                         <td><?= $order['user_name'] ?></td>
                         <td><?= $order['firstname'] . " " . $order['lastname'] ?></td>
                         <td><?= $order['email'] ?></td>
                         <td>
-                            <a href="/impression/<?= $order['id'] ?>"><img class="image__cartlist-icon" src="<?= $router->generate('main-home') ?>assets/images/printer.png"></a>
+                            <a href="/impression/<?= $order['id_request'] ?>"><img class="image__cartlist-icon" src="<?= $router->generate('main-home') ?>assets/images/printer.png"></a>
                         </td>
     </tr>
 

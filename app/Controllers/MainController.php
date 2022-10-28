@@ -17,21 +17,6 @@ class MainController extends CoreController
      */
     public function home()
     {
-
-        // $nom_dossier = "./assets/images/";
-        // // open the directory choose
-        // $dossierCourant = opendir($nom_dossier);
-        // $dossiers = [];
-
-        // // boucle pour parcourir tous les éléments du dossier $nom_dossier 
-        // while ($dossier = readdir($dossierCourant)) {
-        //     // condition pour ne pas prendre le . (dossier en cours) et .. (dosier parent) et garder les dossier uniquement (sans extension)
-        //     if ($dossier != "." && $dossier != ".." && strtolower(pathinfo($dossier, PATHINFO_EXTENSION)) == "") {
-        //         $dossiers[] = $dossier;
-        //     }
-        // }
-        // closedir($dossierCourant);
-
         $this->show('home', ['dossiers' => OrderPhoto::findFolder()]);
     }
 
@@ -106,7 +91,7 @@ class MainController extends CoreController
         if (isset($_SESSION['id_order'])) {
             if ($_SESSION['id_order'] != "") {
                 OrderPhoto::findAll($_SESSION['id_order']);
-                $message = ["", ""];
+                $message = ["hidden", ""];
             } else {
                 $message = ["alert", "Panier vide"];
             }
@@ -136,10 +121,12 @@ class MainController extends CoreController
      */
     public function order()
     {
-        // création d'un numéro de commande si non existant ds variable session 'id_order'
-        Order::create();
 
         if (isset($_POST['selected'])) {
+
+            // création d'un numéro de commande si non existant ds variable session 'id_order'
+            Order::create();
+
             // si c'est une nouvelle liste pour cette session ou si la liste est différente de la sélection (ajout de photo d'un autre dossier par exemple)
             if (!isset($_SESSION['OrderPhoto']) || $_SESSION['OrderPhoto'] !== $_POST['selected']) {
                 // entrée des photos choisi par l'utilisateur ds la bdd en lien avec le numéro de commande
@@ -158,10 +145,6 @@ class MainController extends CoreController
         if (!isset($_SESSION['customer'])) {
             $_SESSION['customer'] = [];
         }
-
-
-        // je créé la variable de session 'OrderPhotoListName' qui contient la iste des photos selectionnées pour cette commande
-        // OrderPhoto::findAllName($_SESSION['id_order']);
 
         $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order']), 'customer' => $_SESSION['customer']]);
     }
@@ -238,7 +221,7 @@ class MainController extends CoreController
             $_SESSION = [];
         }
 
-        header("Location: http://photoviewer/");
+        // header("Location: http://photoviewer/");
         $this->show('home', ['dossiers' => OrderPhoto::findFolder(), 'message' => $message]);
 
         // redirige vers la page d'accueil
@@ -251,62 +234,110 @@ class MainController extends CoreController
      *
      * @return void
      */
-    public function recupOrder($order_id)
+    public function printOrder($order_id)
     {
-        d($_POST);
-        d($_SESSION);
-        // je créé l'architecture dossier pour récupérer les images commandées
-        if (!file_exists("./assets/commandes/commande_" . $_SESSION['id_order'])) {
-            mkdir("./assets/commandes/commande_" . $_SESSION['id_order'], 0700);
-            mkdir("./assets/commandes/commande_" . $_SESSION['id_order'] . "/10x15", 0700);
-            mkdir("./assets/commandes/commande_" . $_SESSION['id_order'] . "/15x20", 0700);
-        } else {
-            echo "ce dossier existe déjà !!!";
-        }
+        // d($_POST);
+        // d($_SESSION);
 
-        $path_fichier = "./assets/commandes/commande_" . $_SESSION['id_order'] . "/" . $_SESSION['customer']['pseudo'] . ".txt";
-        $texte = "commande de " . $_SESSION['customer']['pseudo'];
+        $order_info = Order::find($order_id)[0];
+
+        // je créé l'architecture dossier pour récupérer les images commandées
+        if (!file_exists("./assets/commandes/commande_" . $order_info['id_order'])) {
+            mkdir("./assets/commandes/commande_" . $order_info['id_order'], 0700);
+            mkdir("./assets/commandes/commande_" . $order_info['id_order'] . "/10x15", 0700);
+            mkdir("./assets/commandes/commande_" . $order_info['id_order'] . "/15x20", 0700);
+        } 
+        // else {
+        //     echo "ce dossier existe déjà !!!";
+        // }
+
+        // création d'un fichier texte
+        $path_fichier = "./assets/commandes/commande_" . $order_info['id_order'] . "/" . $order_info['user_name'] . ".txt";
+        // variable pour le contenu
+        $texte = "commande de " . $order_info['user_name'];
+        // j'insere le contenu ds la fichier
         file_put_contents($path_fichier, $texte);
 
-        foreach ($_POST as $image => $number) {
-            // enleve le traitement de la première valeur récupérée du formulaire
-            if ($image != "print") {
-                // selectionne uniquement la taille de l'image (nblight ou nblarge)
-                $size = explode("/", $image)[0];
-                $folder = explode("/", $image)[1];
-                $name = explode("/", $image)[2];
+        // récupération de la liste des photo à imprimer
+        $photo_list_order = OrderPhoto::findAll($order_info['id_order']);
+        // initialisation de la variable pour récupérer la liste des chemin de chaque image
+        $chaine = [];
 
-                // remplace le _jpg par .jpg du au changement de nom automatique lors du passage en tableau indexé du nom avec light ou large
-                $name = preg_replace('/_jpg/', '.jpg', $name);
-                // les espaces du nom de dossiers sont remplacés automatiquement par des '_' donc on remets des espaces
-                $folder = preg_replace('/_/', ' ', $folder);
+        foreach ($photo_list_order as $image) {
+            // selectionne uniquement la taille de l'image (nblight ou nblarge)
+            // $size = explode("/", $image)[0];
+            // $folder = explode("/", $image)[1];
+            // $name = explode("/", $image)[2];
+
+            // // remplace le _jpg par .jpg du au changement de nom automatique lors du passage en tableau indexé du nom avec light ou large
+            // $name = preg_replace('/_jpg/', '.jpg', $name);
+            // // les espaces du nom de dossiers sont remplacés automatiquement par des '_' donc on remets des espaces
+            // $folder = preg_replace('/_/', ' ', $folder);
+
+            // // si le nombre d'impression est >0 on ajoute dans le fichier texte de résumé de commande
+            // if ($number != 0) {
+            //     //On récupère le contenu du fichier
+            //     $texte = file_get_contents($path_fichier);
+            //     //On ajoute notre nouveau texte à l'ancien
+            //     $texte .= "\n$folder=>$name x $number $size";
+            //     file_put_contents($path_fichier, $texte);
+            // }
+
+
+            // boucle pour copier les images ds un dossier selon le nombre d'impression
+            for ($i = 0; $i < $image->nblight; $i++) {
+
+                // je recupere le type d'extension du fichier
+                $extension = strtolower(pathinfo("./assets/images/$image->folder/$image->name", PATHINFO_EXTENSION));
+                // je récupere uniquement le nom du fichier puis j'ajoute un incrément puis l'extension
+                $new_name = explode(".$extension", $image->name)[0] . "($i).$extension";
+                copy("./assets/images/$image->folder/$image->name", "./assets/commandes/commande_" . $order_info['id_order'] . "/10x15/$new_name");
+                $chaine[] = "./assets/commandes/commande_" . $order_info['id_order'] . "/10x15/$new_name";
 
                 // si le nombre d'impression est >0 on ajoute dans le fichier texte de résumé de commande
-                if ($number != 0) {
+                if ($i == 0) {
                     //On récupère le contenu du fichier
                     $texte = file_get_contents($path_fichier);
                     //On ajoute notre nouveau texte à l'ancien
-                    $texte .= "\n$folder=>$name x $number $size";
+                    $texte .= "\n$image->folder=>$image->name x $image->nblight en 10x15cm";
                     file_put_contents($path_fichier, $texte);
                 }
+            }
 
-                // boucle pour copier les images ds un dossier
-                for ($i = 0; $i < $number; $i++) {
-                    $extension = strtolower(pathinfo("./assets/images/$folder/$name", PATHINFO_EXTENSION));
-                    $new_name = explode(".$extension", $name)[0] . "($i).$extension";
+            // boucle pour copier les images ds un dossier
+            for ($i = 0; $i < $image->nblarge; $i++) {
+                $extension = strtolower(pathinfo("./assets/images/$image->folder/$image->name", PATHINFO_EXTENSION));
+                $new_name = explode(".$extension", $image->name)[0] . "($i).$extension";
+                copy("./assets/images/$image->folder/$image->name", "./assets/commandes/commande_" . $order_info['id_order'] . "/15x20/$new_name");
+                $chaine[] = "./assets/commandes/commande_" . $order_info['id_order'] . "/15x20/$new_name";
 
-                    if ($size == "nblight") {
-                        copy("./assets/images/$folder/$name", "./assets/commandes/commande_" . $_SESSION['id_order'] . "/10x15/$new_name");
-                    } else {
-                        copy("./assets/images/$folder/$name", "./assets/commandes/commande_" . $_SESSION['id_order'] . "/15x20/$new_name");
-                    }
-                    // echo "<br> j'imprime le fichier $folder/$name au format " . ($size == "nblight" ? "10x15" : "15x20");
+
+                // si le nombre d'impression est >0 on ajoute dans le fichier texte de résumé de commande
+                if ($i == 0) {
+                    //On récupère le contenu du fichier
+                    $texte = file_get_contents($path_fichier);
+                    //On ajoute notre nouveau texte à l'ancien
+                    $texte .= "\n$image->folder=>$image->name x $image->nblarge en 15x20cm";
+                    file_put_contents($path_fichier, $texte);
                 }
             }
         }
+
+        // TODO à voir pour impression directe
+        // source: https: //www.developpez.net/forums/d58915/php/langage/systeme-imprimer-php/
+        // $lp = 'lp ' + $filename;
+        // shell_exec & #40;$lp&#41;;
+        // $filename == 'toto.pdf ; rm -rf *';
+
+
+
+
         // echo "<br> <br>Commande de XXXXX traitée";
         // $this->show('cart_resume');
-        $this->show('admin', ['message' => "<br> <br>Commande de XXXXX traitée"]);
+        //$this->show('print', ['chaine' => $chaine, 'message' => ["info","commande à imprimer"]]);
+        //header("Location: http://photoviewer/administration");
+
+        $this->show('admin', ['liste' => Order::findAll(), 'message' => ["info", "Commande de " . $order_info['firstname'] . " " . $order_info['lastname'] . " traitée"]]);
     }
 
     /**
@@ -322,7 +353,7 @@ class MainController extends CoreController
         // utiliser un tri si possible
         // ajouter un bouton pour récupérer la commande avec recupOrder($user_id)
 
-       // d($_POST);
+        // d($_POST);
 
         if (isset($_POST)) {
             if ($_POST['pseudo'] == "Malika" || $_POST['pseudo'] == "Christophe") {
@@ -330,7 +361,7 @@ class MainController extends CoreController
                 if ($_POST['password'] == "espaceAdmin") {
                     $message = ["info", "Connexion réussie"];
 
-                    $this->show('admin', ['liste' => Order::findAll(),'message' => $message]);
+                    $this->show('admin', ['liste' => Order::findAll(), 'message' => $message]);
                     exit;
                 } else {
                     $message = ["alert", "Votre login ou mot de passe est incorrect"];
@@ -338,7 +369,7 @@ class MainController extends CoreController
             } else {
                 $message = ["alert", "Votre login ou mot de passe est incorrect"];
             }
-        } 
+        }
 
         $this->show('connexion', ['message' => $message]);
         //header("Location: http://photoviewer/connect");

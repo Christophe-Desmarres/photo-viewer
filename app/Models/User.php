@@ -78,7 +78,7 @@ class User extends CoreModel
             
             return $result;
         } else {
-            return $exist;
+            return $exist[0]->id;
         }
     }
 

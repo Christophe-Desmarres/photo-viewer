@@ -11,6 +11,7 @@
 <script src="./assets/js/inputFiles.js" defer></script>
 <script src="./assets/js/cart.js" defer></script>
 <script src="./assets/js/message.js" defer></script>
+<script src="./assets/js/searchbar.js" defer></script>
 
 </body>
 

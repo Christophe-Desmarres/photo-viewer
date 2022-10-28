@@ -1,16 +1,18 @@
 <?php
-d($_SESSION);
+//d($_SESSION);
 //d($_SESSION = []);
 ?>
 <div class='container'>
 
-    <h1>Listes de dossiers</h1>
+    <h1 class="titre">Choisissez un cours</h1>
+    <?php
 
-    <p class="description">choissisez un cours</p>
+include "../app/views/partials/searchbar.part.php";
 
+?>
     <div class='folderList'>
         <?php foreach ($dossiers as $dossier) : ?>
-            <a href="/images/<?= $dossier ?>"><button class='folderSelect' type='button' onclick='fileList'><?= $dossier ?></button></a>
+            <a class="folder" href="/images/<?= $dossier ?>"><button class='folderSelect'><?= $dossier ?></button></a>
         <?php endforeach; ?>
     </div>
 
