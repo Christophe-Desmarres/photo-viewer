@@ -29,25 +29,25 @@ class Order extends CoreModel
 
     public static function find($order_id)
     {
-           // recherche toutes les commandes
-           $sqlSearch = "
+        // recherche toutes les commandes
+        $sqlSearch = "
            SELECT * FROM `order_customer` 
            INNER JOIN customer 
            ON order_customer.id_customer = customer.id
            WHERE order_customer.id= $order_id
            ";
-  
-    
-          $db = Database::getPDO();
-          $stmtSearch = $db->prepare($sqlSearch);
-          $stmtSearch->execute();
-          $result = $stmtSearch->fetchAll(PDO::FETCH_ASSOC);
-          //ferme la connexion
-          $db = null;
-  
-          // dd($result);
-          
-          return $result;
+
+
+        $db = Database::getPDO();
+        $stmtSearch = $db->prepare($sqlSearch);
+        $stmtSearch->execute();
+        $result = $stmtSearch->fetchAll(PDO::FETCH_ASSOC);
+        //ferme la connexion
+        $db = null;
+
+        // dd($result);
+
+        return $result;
     }
 
     public static function findAll()
@@ -69,13 +69,13 @@ class Order extends CoreModel
         $db = null;
 
         // dd($result);
-        
+
         return $result;
     }
 
 
 
-
+    // création d'un numéro de commande
     public static function create()
     {
         // Récupération des données du fichier de config

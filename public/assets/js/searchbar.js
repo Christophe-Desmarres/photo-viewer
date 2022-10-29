@@ -1,6 +1,3 @@
-console.log('hello coco');
-
-
 // fonction pour choisir les dossiers selon certains critères 
 
 function search() {

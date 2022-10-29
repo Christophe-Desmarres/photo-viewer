@@ -1,4 +1,3 @@
-console.log(document.title);
 if (document.title == "cart | Image Viewer") {
 
     /**
@@ -30,10 +29,14 @@ if (document.title == "cart | Image Viewer") {
     function nbLightMinus(e) {
         let btn = e.currentTarget;
         let nblight = btn.closest('td').querySelector('input');
+
+        // gestion de la valeur de l'input
         if (nblight.dataset.nblight > 0) {
             nblight.dataset.nblight--;
             nblight.value--;
         }
+        setColorInput(e);
+
     }
 
     // increase number of light format
@@ -42,6 +45,8 @@ if (document.title == "cart | Image Viewer") {
         let nblight = btn.closest('td').querySelector('input');
         nblight.dataset.nblight++;
         nblight.setAttribute('value', nblight.value++);
+        setColorInput(e);
+
     }
 
     // decrease number of large format
@@ -52,6 +57,8 @@ if (document.title == "cart | Image Viewer") {
             nblarge.dataset.nblarge--;
             nblarge.value--;
         }
+        setColorInput(e);
+
     }
 
     // increase number of large format
@@ -60,8 +67,50 @@ if (document.title == "cart | Image Viewer") {
         let nblarge = btn.closest('td').querySelector('input');
         nblarge.dataset.nblarge++;
         nblarge.value++;
+        setColorInput(e);
+
     }
 
+    function setColorInput(e) {
+        // console.log(e.path[0].className);
+
+        // if (e.path[0].className == "button__ordervalidate") {
+        //     console.log('toutes les cases');
+
+        // } else {
+        let btn = e.currentTarget;
+        let row = btn.closest('tr');
+        let nblight = row.querySelector('.nblight').querySelector('input');
+        let nblarge = row.querySelector('.nblarge').querySelector('input');
+        // }
+        // console.log(nblight);
+        // console.log(nblarge);
+
+        // gestion du style des input
+        if (nblight.dataset.nblight == 0 && nblarge.dataset.nblarge == 0) {
+            nblight.style.color = "white";
+            nblight.style.backgroundColor = "red";
+            nblarge.style.color = "white";
+            nblarge.style.backgroundColor = "red";
+        } else {
+            nblight.style.backgroundColor = "";
+            nblarge.style.backgroundColor = "";
+
+            if (nblight.dataset.nblight == 0) {
+                nblight.style.color = "red";
+            } else {
+                nblight.style.color = "black";
+            }
+
+            if (nblarge.dataset.nblarge == 0) {
+                nblarge.style.color = "red";
+            } else {
+                nblarge.style.color = "black";
+            }
+        }
+
+        console.log(row.querySelector('input').value);
+    }
 
 
     /**
@@ -74,27 +123,33 @@ if (document.title == "cart | Image Viewer") {
     const button1015 = document.querySelector("#order1015");
     const button1520 = document.querySelector("#order1520");
 
-    button1015.addEventListener('click', addOneAllLight);
-    button1520.addEventListener('click', addOneAllLarge);
+    // si le panier n'est pas vide sinon les boutons n'existent pas
+    if (button1015 != null && button1520 != null) {
+        button1015.addEventListener('click', addOneAllLight);
+        button1520.addEventListener('click', addOneAllLarge);
+    }
 
     // add 1 to all light format
-    function addOneAllLight() {
+    function addOneAllLight(e) {
         let light = document.querySelectorAll('td.nblight input.nb');
 
         light.forEach(nblight => {
             nblight.dataset.nblight++;
             nblight.value++;
+            nblight.style.backgroundColor = "";
+            nblight.style.color = "black";
         });
     }
 
     // add 1 to all large format
-    function addOneAllLarge() {
+    function addOneAllLarge(e) {
         let large = document.querySelectorAll('td.nblarge input.nb');
 
         large.forEach(nblarge => {
             nblarge.dataset.nblarge++;
             nblarge.value++;
+            nblarge.style.backgroundColor = "";
+            nblarge.style.color = "black";
         });
-
     }
 }

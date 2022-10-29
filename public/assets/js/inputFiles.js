@@ -1,8 +1,5 @@
-console.log(document.title);
-
-
-
-if (document.title == "folder | Image Viewer") {
+// pour l'upload des images
+if (document.title == "upload | Image Viewer") {
 
     const input = document.querySelector('#image_uploads');
     const preview = document.querySelector('.preview');
@@ -10,7 +7,7 @@ if (document.title == "folder | Image Viewer") {
     const nbp = document.querySelector(".action");
     const nb = document.createElement('p');
 
-    input.style.opacity = 0.5;
+    // input.style.opacity = 0.5;
 
     input.addEventListener('change', updateImageDisplay);
 
