@@ -31,7 +31,7 @@ class OrderPhoto extends CoreModel
         $this->nblarge = $nblarge;
     }
 
-
+    // find all folders in images folder
     public static function findFolder()
     {
         $nom_dossier = "./assets/images/";
@@ -50,9 +50,6 @@ class OrderPhoto extends CoreModel
 
         return $dossiers;
     }
-
-
-
 
 
     // search photo according to id
@@ -137,6 +134,30 @@ class OrderPhoto extends CoreModel
         $_SESSION['OrderPhotoListName'] = $tablist;
     }
 
+    // get the number of print according to one order
+    public static function getNumberPrint($id_order)
+    {
+
+        $db = Database::getPDO();
+        $sql = "
+        SELECT * from order_photo 
+        WHERE id_order = :id_order
+        ";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(":id_order", $id_order, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        $totalNbLight = 0;
+        $totalNbLarge = 0;
+
+        // je récupere la liste des noms des photos de la commande en cours
+        foreach ($result as $photo) {
+            $totalNbLight += $photo->nblight;
+            $totalNbLarge += $photo->nblarge;
+        }
+        return ['total10x15'=>$totalNbLight, 'total15x20'=> $totalNbLarge];
+    }
 
     // insere les données d'1 photo pour 1 commande
     public function insert()
@@ -164,6 +185,7 @@ class OrderPhoto extends CoreModel
         }
     }
 
+    // update number of print on photo
     public function update($id)
     {
         $sqlUpdate = "
@@ -184,6 +206,7 @@ class OrderPhoto extends CoreModel
         return $result !== [] ? $result : false;
     }
 
+    // delete one hpoto to this order
     public static function delete($id)
     {
         $db = Database::getPDO();

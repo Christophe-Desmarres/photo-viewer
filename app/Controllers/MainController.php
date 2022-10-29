@@ -230,7 +230,7 @@ class MainController extends CoreController
 
 
     /**
-     * Méthode s'occupant de la page du panier
+     * Méthode s'occupant de créer la structure des dossiers avec les photos dedans
      *
      * @return void
      */
@@ -246,7 +246,7 @@ class MainController extends CoreController
             mkdir("./assets/commandes/commande_" . $order_info['id_order'], 0700);
             mkdir("./assets/commandes/commande_" . $order_info['id_order'] . "/10x15", 0700);
             mkdir("./assets/commandes/commande_" . $order_info['id_order'] . "/15x20", 0700);
-        } 
+        }
         // else {
         //     echo "ce dossier existe déjà !!!";
         // }
@@ -264,25 +264,11 @@ class MainController extends CoreController
         $chaine = [];
 
         foreach ($photo_list_order as $image) {
-            // selectionne uniquement la taille de l'image (nblight ou nblarge)
-            // $size = explode("/", $image)[0];
-            // $folder = explode("/", $image)[1];
-            // $name = explode("/", $image)[2];
 
             // // remplace le _jpg par .jpg du au changement de nom automatique lors du passage en tableau indexé du nom avec light ou large
             // $name = preg_replace('/_jpg/', '.jpg', $name);
             // // les espaces du nom de dossiers sont remplacés automatiquement par des '_' donc on remets des espaces
             // $folder = preg_replace('/_/', ' ', $folder);
-
-            // // si le nombre d'impression est >0 on ajoute dans le fichier texte de résumé de commande
-            // if ($number != 0) {
-            //     //On récupère le contenu du fichier
-            //     $texte = file_get_contents($path_fichier);
-            //     //On ajoute notre nouveau texte à l'ancien
-            //     $texte .= "\n$folder=>$name x $number $size";
-            //     file_put_contents($path_fichier, $texte);
-            // }
-
 
             // boucle pour copier les images ds un dossier selon le nombre d'impression
             for ($i = 0; $i < $image->nblight; $i++) {
@@ -323,6 +309,15 @@ class MainController extends CoreController
             }
         }
 
+
+        // passer la commande en printed
+        if (Order::updateOrderPrint($order_info['id_order'])) {
+            $message = ["info", "Commande de " . $order_info['firstname'] . " " . $order_info['lastname'] . " traitée"];
+        } else {
+            $message = ["alert", "La commande de " . $order_info['firstname'] . " " . $order_info['lastname'] . " a déja été imprimée."];
+        }
+
+
         // TODO à voir pour impression directe
         // source: https: //www.developpez.net/forums/d58915/php/langage/systeme-imprimer-php/
         // $lp = 'lp ' + $filename;
@@ -330,14 +325,12 @@ class MainController extends CoreController
         // $filename == 'toto.pdf ; rm -rf *';
 
 
-
-
         // echo "<br> <br>Commande de XXXXX traitée";
         // $this->show('cart_resume');
         //$this->show('print', ['chaine' => $chaine, 'message' => ["info","commande à imprimer"]]);
         //header("Location: http://photoviewer/administration");
 
-        $this->show('admin', ['liste' => Order::findAll(), 'message' => ["info", "Commande de " . $order_info['firstname'] . " " . $order_info['lastname'] . " traitée"]]);
+        $this->show('admin', ['liste' => Order::findAll(), 'message' => $message]);
     }
 
     /**

@@ -57,20 +57,26 @@ class Order extends CoreModel
          SELECT *, order_customer.id AS id_request, customer.id AS customer_id FROM `order_customer` 
          INNER JOIN customer 
          ON order_customer.id_customer = customer.id
+         ORDER BY order_customer.created_at 
          ";
-
-
 
         $db = Database::getPDO();
         $stmtSearch = $db->prepare($sqlSearch);
         $stmtSearch->execute();
         $result = $stmtSearch->fetchAll(PDO::FETCH_ASSOC);
         //ferme la connexion
+        d($result);
+        $recapOrder = [];
+        foreach ($result as $index => $order) {
+            $recapNumber = OrderPhoto::getNumberPrint($order['id_order']);
+            $order['10x15'] = $recapNumber['total10x15'];
+            $order['15x20'] = $recapNumber['total15x20'];
+            $recapOrder[] = $order;
+        }
+
         $db = null;
 
-        // dd($result);
-
-        return $result;
+        return $recapOrder;
     }
 
 
@@ -93,7 +99,7 @@ class Order extends CoreModel
         return $_SESSION['id_order'];
     }
 
-
+    // add an order
     public function insert()
     {
         $db = Database::getPDO();
@@ -105,7 +111,6 @@ class Order extends CoreModel
         $stmt->bindValue(":id_order", $this->id_order, PDO::PARAM_STR);
         $stmt->bindValue(":id_customer", $this->id_customer, PDO::PARAM_INT);
         $stmt->execute();
-        // retourne l'id du dernier élément inséréde cette connexion db
         $result = $stmt->fetchAll(PDO::FETCH_CLASS);
         //ferme la connexion
         $db = null;
@@ -115,5 +120,24 @@ class Order extends CoreModel
 
     public function update()
     {
+    }
+
+    // change order status 'pending' to 'printed'
+    public static function updateOrderPrint($order_id)
+    {
+        $db = Database::getPDO();
+        $sql = "
+        UPDATE `order_customer`
+        SET order_status = 'printed'
+        WHERE id_order = :id_order
+        ";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(":id_order", $order_id, PDO::PARAM_STR);
+        $stmt->execute();
+        $rows = $stmt->rowCount();
+        //ferme la connexion
+        $db = null;
+
+        return $rows;
     }
 }

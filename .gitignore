@@ -9,5 +9,9 @@ app/config copy.ini
 !/assets/images
 /assets/images/*
 
+#commandes
+!/assets/commandes
+/assets/commandes/*
+
 #BDD
 app/dump.sql

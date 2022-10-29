@@ -700,6 +700,23 @@ input.nb {
     width: 200px;
 }
 
+
+/* ----------------------------------------- */
+/* espace administration */
+/* ----------------------------------------- */
+
+.pending{
+color: orange;
+}
+
+.printed{
+color: green;
+}
+
+
+
+
+
 /* ---------- */
 /* css footer */
 /* ---------- */
