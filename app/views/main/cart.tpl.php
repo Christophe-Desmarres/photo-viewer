@@ -1,7 +1,3 @@
-<?php
-d($_SESSION);
-d($_POST);
-?>
 <div class='container'>
 
      <form class="cart__preview" action="/cart_send" method="post" autocomplete="off">

@@ -1,4 +1,3 @@
-
     <form class="connexion" method="post"  action="/administration">
         
         <div class="connexion__left">

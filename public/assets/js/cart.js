@@ -72,20 +72,12 @@ if (document.title == "cart | Image Viewer") {
     }
 
     function setColorInput(e) {
-        // console.log(e.path[0].className);
 
-        // if (e.path[0].className == "button__ordervalidate") {
-        //     console.log('toutes les cases');
-
-        // } else {
         let btn = e.currentTarget;
         let row = btn.closest('tr');
         let nblight = row.querySelector('.nblight').querySelector('input');
         let nblarge = row.querySelector('.nblarge').querySelector('input');
-        // }
-        // console.log(nblight);
-        // console.log(nblarge);
-
+       
         // gestion du style des input
         if (nblight.dataset.nblight == 0 && nblarge.dataset.nblarge == 0) {
             nblight.style.color = "white";
@@ -109,7 +101,6 @@ if (document.title == "cart | Image Viewer") {
             }
         }
 
-        console.log(row.querySelector('input').value);
     }
 
 

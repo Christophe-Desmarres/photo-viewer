@@ -1,7 +1,3 @@
-<?php
-//d($_SESSION);
-//d($_SESSION = []);
-?>
 <div class='container'>
 
     <h1 class="titre">Choisissez un cours</h1>

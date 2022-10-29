@@ -5,6 +5,8 @@
 html,
 body {
     height: 100%;
+    user-select: none;
+
 }
 
 body {
@@ -232,20 +234,28 @@ main {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: stretch;
 }
 
 .folder {
-    width: 15%;
-    /* flex-grow: 1; */
+    padding: 1rem;
+    margin-right: auto;
+    margin-left: auto;
+    width: 25%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-decoration: none;
 }
 
 
 .folderSelect,
 .button__ordervalidate {
+    width: 85%;
     display: inline-block;
     font-size: 1.5rem;
     padding: 1rem;
-    /* margin: 1rem; */
     color: #fff;
     background-color: #222;
     border: 2px solid #fff;
@@ -533,6 +543,7 @@ tr:nth-child(even) {
 }
 
 input.nb {
+
     width: auto;
     background-color: transparent;
     border: transparent;
@@ -705,12 +716,12 @@ input.nb {
 /* espace administration */
 /* ----------------------------------------- */
 
-.pending{
-color: orange;
+.pending {
+    color: orange;
 }
 
-.printed{
-color: green;
+.printed {
+    color: green;
 }
 
 

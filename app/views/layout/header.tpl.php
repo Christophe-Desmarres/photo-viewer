@@ -31,4 +31,4 @@
     </header>
 
     <main>
-        <p id="message" class="<?= isset($message)?$message[0]:"hidden" ?>"><?= isset($message)?$message[1]:"" ?></p>
+        <p id="message" class="<?= isset($message) ? $message[0] : "hidden" ?>"><?= isset($message) ? $message[1] : "" ?></p>

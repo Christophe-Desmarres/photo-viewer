@@ -1,3 +1,4 @@
+console.log('hello coco');
 // fonction pour choisir les dossiers selon certains critères 
 
 function search() {
@@ -11,12 +12,16 @@ function search() {
 
     folders.forEach(folder => {
 
-        let searchName = folder.innerText;
+        let searchName = folder.innerText.toLowerCase();
 
-        if ((searchName.includes(professor.value) || professor.value == "all") && (searchName.includes(level.value) || level.value == "all") && (searchName.includes(lessonDay.value) || lessonDay.value == "all")) {
-            folder.parentElement.classList.remove('hidden');
+        if ((searchName.includes(professor.value.toLowerCase()) || professor.value == "all") && (searchName.includes(level.value.toLowerCase()) || level.value == "all") && (searchName.includes(lessonDay.value.toLowerCase()) || lessonDay.value == "all")) {
+            folder.parentElement.className = "folder";
+            // folder.parentElement.classList.remove('hidden');
         } else {
-            folder.parentElement.classList.add('hidden');
+            //! interference avec display nonne et display flex
+            // il faut enlever la classe d'origine et ne mettre que celle avec display none
+            // folder.parentElement.classList.add('hidden');
+            folder.parentElement.className = "hidden";
         }
 
     });
