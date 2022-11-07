@@ -156,7 +156,7 @@ class OrderPhoto extends CoreModel
             $totalNbLight += $photo->nblight;
             $totalNbLarge += $photo->nblarge;
         }
-        return ['total10x15'=>$totalNbLight, 'total15x20'=> $totalNbLarge];
+        return ['total10x15' => $totalNbLight, 'total15x20' => $totalNbLarge];
     }
 
     // insere les données d'1 photo pour 1 commande
@@ -206,6 +206,64 @@ class OrderPhoto extends CoreModel
         return $result !== [] ? $result : false;
     }
 
+
+    // increase number of print on photo light format
+    public static function lightplus($id)
+    {
+
+        $photo =  OrderPhoto::findById($id);
+        // d($photo[0]->nblight);
+        $nblight = (int) $photo[0]->nblight;
+        d($nblight);
+
+        $nblight++;
+        d($nblight);
+
+        // dd($nblight);
+
+
+        $sqlUpdate = "
+        UPDATE `order_photo`
+        SET nblight = :nblight
+        WHERE id = :id
+        ";
+        $db = Database::getPDO();
+        $stmtUpdate = $db->prepare($sqlUpdate);
+        $stmtUpdate->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmtUpdate->bindValue(":nblight", $nblight, PDO::PARAM_INT);
+        $stmtUpdate->execute();
+        $result = $stmtUpdate->fetchAll(PDO::FETCH_CLASS);
+
+        //ferme la connexion
+        $db = null;
+        return $result !== [] ? $result : false;
+    }
+
+    // diminish number of print on photo light format
+    public static function lightminus($id)
+    {
+
+        $photo =  OrderPhoto::findById($id);
+
+        $sqlUpdate = "
+            UPDATE `order_photo`
+            SET nblight = :nblight
+            WHERE id = :id
+            ";
+        $db = Database::getPDO();
+        $stmtUpdate = $db->prepare($sqlUpdate);
+        $stmtUpdate->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmtUpdate->bindValue(":nblight", (int) $photo[0]->nblight--, PDO::PARAM_INT);
+        $stmtUpdate->execute();
+        $result = $stmtUpdate->fetchAll(PDO::FETCH_CLASS);
+
+        //ferme la connexion
+        $db = null;
+        return $result !== [] ? $result : false;
+    }
+
+
+
     // delete one hpoto to this order
     public static function delete($id)
     {
@@ -216,26 +274,5 @@ class OrderPhoto extends CoreModel
         ";
         $stmt = $db->prepare($sql);
         $stmt->execute();
-    }
-
-
-    /**
-     * Set the value of nblight
-     *
-     * @return  self
-     */
-    public function setNblight($nblight)
-    {
-        $this->nblight = $nblight;
-    }
-
-    /**
-     * Set the value of nblarge
-     *
-     * @return  self
-     */
-    public function setNblarge($nblarge)
-    {
-        $this->nblarge = $nblarge;
     }
 }

@@ -84,65 +84,6 @@ h1 {
 
 
 /* ----------------------------------------- */
-/* gestion des messages */
-/* ----------------------------------------- */
-
-#message {
-    padding: 1rem;
-    width: 100%;
-    font-size: 2rem;
-    text-align: center;
-    animation: appear linear 5s;
-}
-
-@keyframes appear {
-    0% {
-        opacity: 0;
-    }
-
-    25% {
-        opacity: 1;
-    }
-
-    75% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-.alert {
-    background-color: red;
-    color: white;
-}
-
-.info {
-    background-color: lightskyblue;
-    color: black;
-}
-
-.hidden {
-    display: none;
-}
-
-.empty {
-    display: block;
-    width: 100%;
-    text-align: center;
-    font-size: 3rem;
-    padding: 2rem;
-    color: red;
-}
-
-strong {
-    font-weight: bold;
-    font-size: 3rem;
-}
-
-
-/* ----------------------------------------- */
 /*----------------------------*/
 /* ----------------------------------------- */
 
@@ -230,12 +171,38 @@ main {
 }
 
 
+.loader {
+    display: inline-block;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid orange;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+
 .folderList {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: stretch;
+}
+
+.buttonchoice {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    z-index: 999;
+    position: sticky;
+    top: 1%;
 }
 
 .folder {
@@ -256,23 +223,56 @@ main {
     display: inline-block;
     font-size: 1.5rem;
     padding: 1rem;
-    color: #fff;
-    background-color: #222;
-    border: 2px solid #fff;
+    margin: 0.5rem;
+
     border-radius: 5px;
     box-shadow: 5px 5px 7px #222;
 }
 
+
+.folderSelect {
+    color: #fff;
+    background-color: #222;
+    border: 2px solid #fff;
+}
+
+.button__ordervalidate {
+    color: #fff;
+    background-color: orange;
+    border: 2px solid #fff;
+
+}
+
 .folderSelect:hover,
 .button__ordervalidate:hover {
-    color: #222;
-    background-color: #fff;
-    border-color: #222;
+
     box-shadow: 1px 1px 5px #222;
     box-shadow: inset 5px 5px 7px #222;
 
 }
 
+.folderSelect:hover {
+    color: #222;
+    background-color: #fff;
+    border-color: #222;
+}
+
+.button__ordervalidate:hover {
+    background-color: #fff;
+}
+
+[name='back']:hover {
+    color: red;
+    border: 2px solid red;
+
+}
+
+[name='ordervalidate']:hover {
+    color: green;
+    border: 2px solid green;
+    ;
+
+}
 
 .button__ordervalidate {
     display: block;
@@ -725,6 +725,65 @@ input.nb {
 }
 
 
+
+/* ----------------------------------------- */
+/* gestion des messages */
+/* ----------------------------------------- */
+
+#message,
+.session {
+    padding: 1rem;
+    width: 100%;
+    font-size: 2rem;
+    text-align: center;
+    animation: appear linear 5s;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    75% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.alert {
+    background-color: red;
+    color: white;
+}
+
+.info {
+    background-color: lightskyblue;
+    color: black;
+}
+
+.hidden {
+    display: none;
+}
+
+.empty {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+    padding: 2rem;
+    color: red;
+}
+
+strong {
+    font-weight: bold;
+    font-size: 3rem;
+}
 
 
 

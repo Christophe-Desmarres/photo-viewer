@@ -1,3 +1,8 @@
+<?php
+d($_SESSION);
+d($viewVars);
+d($_POST);
+?>
 <div class='container'>
 
     <h1>Récapitulatif de la commande</h1>
@@ -60,15 +65,15 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><?= $price_light * 2 ?>€</td>
-                <td><?= $price_large * 3 ?>€</td>
+                <td><?= $price_light * $lightprice ?>€</td>
+                <td><?= $price_large * $largeprice ?>€</td>
             </tr>
             <tr class="row end">
                 <td>TOTAL</td>
                 <td></td>
                 <td><?= $price_light + $price_large?></td>
                 <td>impressions</td>
-                <td><?= $price_light * 2 + $price_large * 3 ?>€</td>
+                <td><?= $price_light * $lightprice + $price_large * $largeprice ?>€</td>
             </tr>
         </table>
 

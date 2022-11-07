@@ -19,6 +19,10 @@
         <div class="banniere">
             <a href="/"><img class="logo" src="<?= $router->generate('main-home') ?>assets/logo.png"></a>
             <h1 class="header--title">CD Mar Photo</h1>
+            <video width="320" controls autoplay loop muted>
+                <source src="<?= $router->generate('main-home') ?>assets/video/diapo stage danse 2022.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
         <?php
@@ -27,8 +31,9 @@
 
         ?>
 
-
     </header>
 
     <main>
+        <p class="session "><?= isset($_SESSION) ? 'commande en cours : ' . $_SESSION['id_order'] : "" ?></p>
+        <p class="session "><?= isset($_SESSION) ? 'pseudo : ' . $_SESSION['customer']['pseudo'] : "" ?></p>
         <p id="message" class="<?= isset($message) ? $message[0] : "hidden" ?>"><?= isset($message) ? $message[1] : "" ?></p>

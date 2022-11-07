@@ -103,16 +103,56 @@ $router->addRoutes([
         ],
         'main-order'
     ],
-        // to see the selected image and choose number of impression to print
+    // to increase number of impression to print in light format
+    [
+        'GET',
+        '/cart/lightplus/[i:id]',
         [
-            'GET',
-            '/cart/delete/[i:id]',
-            [
-                'method' => 'delete',
-                'controller' => '\App\Controllers\MainController'
-            ],
-            'main-delete'
+            'method' => 'lightplus',
+            'controller' => '\App\Controllers\OrderPhotoController'
         ],
+        'OrderPhoto-lightplus'
+    ],
+    // to diminish number of impression to print in light format
+    [
+        'GET',
+        '/cart/lightminus/[i:id]',
+        [
+            'method' => 'lightminus',
+            'controller' => '\App\Controllers\OrderPhotoController'
+        ],
+        'OrderPhoto-lightminus'
+    ],
+    // to increase number of impression to print in large format
+    [
+        'GET',
+        '/cart/largeplus/[i:id]',
+        [
+            'method' => 'largeplus',
+            'controller' => '\App\Controllers\OrderPhotoController'
+        ],
+        'OrderPhoto-largeplus'
+    ],
+    // to diminish number of impression to print in large format
+    [
+        'GET',
+        '/cart/largeminus/[i:id]',
+        [
+            'method' => 'largeminus',
+            'controller' => '\App\Controllers\OrderPhotoController'
+        ],
+        'OrderPhoto-largeminus'
+    ],
+    // to delete the selected image 
+    [
+        'GET',
+        '/cart/delete/[i:id]',
+        [
+            'method' => 'delete',
+            'controller' => '\App\Controllers\OrderPhotoController'
+        ],
+        'OrderPhoto-delete'
+    ],
     // to see the resume of cart to validate them
     [
         'POST',
@@ -143,16 +183,16 @@ $router->addRoutes([
         ],
         'main-admin'
     ],
-        // to see every image at the selected folder to choose them
+    // to see every image at the selected folder to choose them
+    [
+        'GET',
+        '/impression/[i:id]',
         [
-            'GET',
-            '/impression/[i:id]',
-            [
-                'method' => 'printOrder',
-                'controller' => '\App\Controllers\MainController'
-            ],
-            'main-printOrder'
+            'method' => 'printOrder',
+            'controller' => '\App\Controllers\MainController'
         ],
+        'main-printOrder'
+    ],
     // to upload files to print in folder
     [
         'POST',

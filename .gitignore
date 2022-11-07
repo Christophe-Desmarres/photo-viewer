@@ -6,8 +6,10 @@ app/config.ini
 app/config copy.ini
 
 # images
-!/assets/images
 /assets/images/*
+
+# video
+video/
 
 #commandes
 !/assets/commandes

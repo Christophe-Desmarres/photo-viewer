@@ -1,14 +1,22 @@
+<?php
+d($_SESSION);
+d($_POST);
+?>
 <div class='container'>
 
     <h1 class="titre">Album <?= $folder ?></h1>
+
 
     <form class="galerie__preview" action="/cart" method="post">
 
 
         <?php
         if ($chaine != []) : ?>
-
-            <button class='button__ordervalidate' type='submit' name='order'>Sélection terminée pour commande</button>
+            <div class="buttonchoice">
+                <button class='button__ordervalidate' type='submit' name='back'>Annuler</button>
+                <div class="loader" id="loading"></div>
+                <button class='button__ordervalidate' type='submit' name='ordervalidate'>Ajouter au panier <span id="count"></span></button>
+            </div>
             <div class='image__orderlist'>
                 <?php
                 foreach ($chaine as $index => $image) : ?>

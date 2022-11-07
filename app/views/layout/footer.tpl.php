@@ -12,6 +12,7 @@
 <script src="<?= $router->generate('main-home') ?>assets/js/cart.js" defer></script>
 <script src="<?= $router->generate('main-home') ?>assets/js/message.js" defer></script>
 <script src="<?= $router->generate('main-home') ?>assets/js/searchbar.js" defer></script>
+<script src="<?= $router->generate('main-home') ?>assets/js/buttonchoice.js" defer></script>
 
 </body>
 

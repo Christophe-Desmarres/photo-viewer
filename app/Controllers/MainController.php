@@ -110,7 +110,6 @@ class MainController extends CoreController
             $_SESSION['customer']['email'] = "";
         }
 
-
         $this->show('cart', ['liste' => $_SESSION['OrderPhoto'], 'customer' => $_SESSION['customer'], 'message' => $message]);
     }
 
@@ -122,44 +121,35 @@ class MainController extends CoreController
     public function order()
     {
 
-        if (isset($_POST['selected'])) {
+        if (isset($_POST['back'])) {
+            header("Location: http://photoviewer");
+            exit;
+        } else {
 
-            // création d'un numéro de commande si non existant ds variable session 'id_order'
-            Order::create();
 
-            // si c'est une nouvelle liste pour cette session ou si la liste est différente de la sélection (ajout de photo d'un autre dossier par exemple)
-            if (!isset($_SESSION['OrderPhoto']) || $_SESSION['OrderPhoto'] !== $_POST['selected']) {
-                // entrée des photos choisi par l'utilisateur ds la bdd en lien avec le numéro de commande
-                foreach ($_POST['selected'] as $index => $path) {
-                    // je récupere le dossier et le nom du fichier
-                    $folder = explode("/", $path)[0];
-                    $name = explode("/", $path)[1];
-                    // j'instancie la classe OrderPhoto pour créer un objet photo relié à un id_order
-                    $photo = new OrderPhoto($_SESSION['id_order'], $folder, $name);
-                    // j'ajoute l'objet dans la bdd
-                    $photo->insert();
+            if (isset($_POST['selected'])) {
+
+                // création d'un numéro de commande si non existant ds variable session 'id_order'
+                Order::create();
+
+                // si c'est une nouvelle liste pour cette session ou si la liste est différente de la sélection (ajout de photo d'un autre dossier par exemple)
+                if (!isset($_SESSION['OrderPhoto']) || $_SESSION['OrderPhoto'] !== $_POST['selected']) {
+                    // entrée des photos choisi par l'utilisateur ds la bdd en lien avec le numéro de commande
+                    foreach ($_POST['selected'] as $index => $path) {
+                        // je récupere le dossier et le nom du fichier
+                        $folder = explode("/", $path)[0];
+                        $name = explode("/", $path)[1];
+                        // j'instancie la classe OrderPhoto pour créer un objet photo relié à un id_order
+                        $photo = new OrderPhoto($_SESSION['id_order'], $folder, $name);
+                        // j'ajoute l'objet dans la bdd
+                        $photo->insert();
+                    }
                 }
             }
         }
 
-        if (!isset($_SESSION['customer'])) {
-            $_SESSION['customer'] = [];
-        }
 
-        $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order']), 'customer' => $_SESSION['customer']]);
-    }
-
-
-    /**
-     * Méthode s'occupant de supprimer une photo du panier
-     *
-     * @return void
-     */
-    public function delete($id)
-    {
-        OrderPhoto::delete($id);
-
-        $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order']), 'customer' => $_SESSION['customer']]);
+        $this->show('cart', ['liste' => OrderPhoto::findAll($_SESSION['id_order'])]); //, 'customer' => $_SESSION['customer']]);
     }
 
 
@@ -199,8 +189,12 @@ class MainController extends CoreController
         }
 
         $_SESSION['customer'] = $_POST['customer'];
+        
+        // Récupération des données du fichier de config
+        // la fonction parse_ini_file parse le fichier et retourne un array associatif
+        $configData = parse_ini_file(__DIR__ . '/../config.ini');
 
-        $this->show('cart_resume', ['liste' => OrderPhoto::findAll($_SESSION['id_order']),  'customer' => $_SESSION['customer']]);
+        $this->show('cart_resume', ['liste' => OrderPhoto::findAll($_SESSION['id_order']),  'customer' => $_SESSION['customer'], 'lightprice' => $configData['LIGHTPRICE'], 'largeprice' => $configData['LARGEPRICE']]);
     }
 
     /**

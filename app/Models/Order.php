@@ -45,7 +45,6 @@ class Order extends CoreModel
         //ferme la connexion
         $db = null;
 
-        // dd($result);
 
         return $result;
     }
@@ -64,8 +63,7 @@ class Order extends CoreModel
         $stmtSearch = $db->prepare($sqlSearch);
         $stmtSearch->execute();
         $result = $stmtSearch->fetchAll(PDO::FETCH_ASSOC);
-        //ferme la connexion
-        d($result);
+
         $recapOrder = [];
         foreach ($result as $index => $order) {
             $recapNumber = OrderPhoto::getNumberPrint($order['id_order']);
@@ -95,6 +93,7 @@ class Order extends CoreModel
             $order_number = $configData['MACHINE_NAME'] . "-" . date("Ymd-Gis");
             $_SESSION['id_order'] = $order_number;
         }
+
         // return order number
         return $_SESSION['id_order'];
     }
